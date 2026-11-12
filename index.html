@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>TENTÁ · Gres — Vajilla para hogar y gastronomía</title>
+<style>
+  :root{
+    --bg:#E8DBD3;
+    --bg-top:#ECE1DB;
+    --bg-bot:#E1D2C9;
+    --ink:#2A241F;
+    --soft:#7C6F64;
+    --line:#D7C8BC;
+    --clay:#A07E63;
+    --wa:#25D366;
+    --pad:clamp(18px,5vw,72px);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;color:var(--ink);
+    background:linear-gradient(180deg,var(--bg-top),var(--bg) 46%,var(--bg-bot));
+    background-attachment:fixed;
+    font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  img{max-width:100%;display:block}
+  a{color:inherit;text-decoration:none}
+  .wrap{width:100%;max-width:1780px;margin:0 auto;padding:0 var(--pad)}
+  h2{font-weight:300;margin:0}
+
+  /* Botones */
+  .btn{display:inline-flex;align-items:center;gap:9px;font-size:11.5px;letter-spacing:.18em;
+    text-transform:uppercase;padding:14px 26px;border-radius:999px;border:1px solid var(--ink);
+    background:transparent;color:var(--ink);cursor:pointer;transition:.22s;white-space:nowrap}
+  .btn:hover{background:var(--ink);color:var(--bg)}
+  .btn-wa{background:var(--wa);border-color:var(--wa);color:#06331a}
+  .btn-wa:hover{background:#1eb858;border-color:#1eb858}
+  .btn svg{width:15px;height:15px}
+
+  /* Hero */
+  .hero{position:relative;height:100svh;min-height:560px;display:flex;align-items:center;justify-content:center;
+    text-align:center;padding:90px var(--pad) 70px;overflow:hidden}
+  .hero-bg{position:absolute;inset:0;z-index:0;display:grid;grid-template-columns:1fr 1fr}
+  .hcol{position:relative;overflow:hidden}
+  .hcol img{position:absolute;left:0;top:-15%;width:100%;height:130%;object-fit:cover;will-change:transform}
+  .hero-scrim{position:absolute;inset:0;z-index:1;
+    background:linear-gradient(180deg,rgba(40,28,20,.42),rgba(40,28,20,.12) 38%,rgba(40,28,20,.38)),
+      radial-gradient(ellipse 62% 56% at 50% 50%,rgba(28,19,13,.5),rgba(28,19,13,0) 72%)}
+  .hero-inner{position:relative;z-index:2;will-change:transform,opacity;max-width:720px}
+  .hero-logo{width:min(360px,76vw);margin:0 auto}
+  .hero-tag{margin:24px 0 0;font-size:clamp(10px,1.4vw,12.5px);letter-spacing:.5em;text-transform:uppercase;color:#EAD7C1}
+  .hero-meta{margin:20px auto 0;font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:rgba(245,238,228,.82);
+    display:inline-flex;align-items:center;gap:14px}
+  .hero-meta span{color:#EAD7C1}
+  .hero-foot{position:absolute;z-index:2;bottom:30px;left:50%;transform:translateX(-50%);margin:0;
+    font-size:12px;letter-spacing:.2em;text-transform:uppercase;color:rgba(245,238,228,.82);
+    display:inline-flex;align-items:center;gap:14px;white-space:nowrap}
+  .hero-foot span{color:#EAD7C1}
+  @keyframes drop{0%,100%{opacity:.15;transform:scaleY(.35);transform-origin:top}50%{opacity:1;transform:scaleY(1);transform-origin:top}}
+
+  /* Banda full-frame horizontal */
+  .band{position:relative;width:100vw;margin-left:calc(50% - 50vw);
+    height:clamp(380px,76vh,760px);overflow:hidden}
+  .band img{position:absolute;left:0;top:-15%;width:100%;height:130%;object-fit:cover;will-change:transform}
+  .band .cap{position:absolute;left:0;bottom:0;z-index:2;padding:clamp(20px,4vw,50px);
+    color:#F5EEE4;font-size:11px;letter-spacing:.3em;text-transform:uppercase;
+    text-shadow:0 2px 14px rgba(0,0,0,.4)}
+  .band::after{content:"";position:absolute;inset:0;z-index:1;
+    background:linear-gradient(0deg,rgba(26,18,12,.3),rgba(26,18,12,0) 42%)}
+
+  /* Secciones */
+  section{padding:clamp(54px,8vw,120px) 0}
+  .sec-head{margin:0 0 clamp(30px,5vw,56px);max-width:640px}
+  .sec-head.center{margin-left:auto;margin-right:auto;text-align:center}
+  .sec-head h2{font-size:clamp(26px,4.4vw,50px);letter-spacing:.01em;line-height:1.02}
+  .sec-head p{margin:16px 0 0;color:var(--soft);font-size:clamp(15px,1.7vw,17px);line-height:1.6}
+  .sec-head .eyebrow{font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--clay);margin:0 0 16px}
+
+  /* Moodboard (masonry) */
+  .board{column-count:4;column-gap:clamp(12px,1.6vw,22px)}
+  .tile{break-inside:avoid;margin:0 0 clamp(12px,1.6vw,22px);position:relative;overflow:hidden;
+    border-radius:clamp(16px,1.8vw,26px);cursor:pointer;display:block}
+  .tile img{width:100%;height:100%;object-fit:cover;transition:transform 1.1s cubic-bezier(.19,.7,.2,1)}
+  .tile:hover img{transform:scale(1.05)}
+  .tile .ov{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;
+    padding:18px;background:linear-gradient(0deg,rgba(26,20,15,.72),rgba(26,20,15,0) 55%);
+    color:#F5EEE4;opacity:0;transition:.3s}
+  .tile:hover .ov{opacity:1}
+  .tile .ov .t{font-size:16px}
+  .tile .ov .s{font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:#E2CBB0;margin-top:3px;
+    display:flex;align-items:center;gap:6px}
+  .tile .ov .s svg{width:13px;height:13px}
+
+  /* Esmaltes */
+  .glaze-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:clamp(18px,2.4vw,34px)}
+  .glaze{text-align:center}
+  .chip{width:100%;aspect-ratio:1/1;border-radius:50%;border:1px solid rgba(0,0,0,.07);
+    box-shadow:inset 0 -10px 22px rgba(0,0,0,.14),inset 0 8px 15px rgba(255,255,255,.22);transition:.35s}
+  .glaze:hover .chip{transform:translateY(-5px) scale(1.04);box-shadow:0 18px 30px -14px rgba(0,0,0,.4),inset 0 -10px 22px rgba(0,0,0,.18)}
+  .glaze .gn{display:block;font-size:14px;margin-top:14px}
+  .glaze .gt{display:block;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#8A8175;margin-top:3px;min-height:12px}
+
+  /* Cómo trabajamos */
+  .info-wrap{background:rgba(255,255,255,.28);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);
+    border:1px solid var(--line);border-radius:14px;overflow:hidden}
+  .info{padding:clamp(28px,3vw,40px);background:var(--bg)}
+  .info .k{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--clay)}
+  .info h3{font-size:clamp(19px,1.8vw,23px);font-weight:400;margin:14px 0 10px}
+  .info p{margin:0;color:var(--soft);font-size:15px;line-height:1.6}
+
+  /* Mayorista band */
+  .whole{display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(28px,5vw,70px);align-items:center;margin-top:clamp(40px,6vw,72px)}
+  .whole .eyebrow{font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--clay);margin:0 0 14px}
+  .whole h2{font-size:clamp(24px,3.6vw,40px)}
+  .whole p{color:var(--soft);margin:16px 0 26px;line-height:1.65}
+  .whole ul{list-style:none;padding:0;margin:0 0 28px;display:grid;gap:10px}
+  .whole li{display:flex;gap:12px;align-items:baseline;font-size:15px}
+  .whole li::before{content:"—";color:var(--clay)}
+  .whole-media img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:clamp(16px,1.8vw,26px)}
+
+  /* Contacto / CTA */
+  .contact{text-align:center}
+  .contact img{width:min(140px,44vw);margin:0 auto 24px}
+  .contact h2{font-size:clamp(26px,4vw,44px);font-weight:300}
+  .contact p{color:var(--soft);max-width:48ch;margin:16px auto 30px;line-height:1.6}
+  .contact .cta{display:flex;gap:13px;flex-wrap:wrap;justify-content:center}
+  .contact .mail{display:block;margin-top:22px;font-size:13px;letter-spacing:.08em;color:var(--soft)}
+
+  /* Footer */
+  .foot{display:flex;flex-direction:column;align-items:center;gap:10px;
+    padding:56px var(--pad) calc(90px + env(safe-area-inset-bottom));border-top:1px solid var(--line)}
+  .foot img{height:22px;opacity:.85}
+  .foot small{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--soft)}
+
+  /* WhatsApp flotante */
+  .wa-float{position:fixed;right:18px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:60;
+    display:flex;align-items:center;gap:9px;background:rgba(250,245,239,.72);color:var(--ink);
+    padding:12px 18px;border-radius:999px;border:1px solid var(--line);backdrop-filter:blur(10px);
+    box-shadow:0 10px 26px -14px rgba(0,0,0,.3);transition:.22s;font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+  .wa-float:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  .wa-float svg{width:19px;height:19px;flex:none;opacity:.85}
+
+  /* Reveal — curva suave tipo ko-hyo */
+  .reveal{opacity:0;transform:translateY(52px) scale(.98);
+    transition:opacity 1.05s cubic-bezier(.16,1,.3,1),transform 1.15s cubic-bezier(.16,1,.3,1)}
+  .reveal.in{opacity:1;transform:none}
+  /* Las bandas no escalan (quedan a sangre completa) */
+  .band.reveal{transform:translateY(60px)}
+  .band.reveal.in{transform:none}
+  @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.hero-inner{transform:none!important;opacity:1!important}}
+
+  @media(max-width:620px){ .hero-bg{grid-template-columns:1fr;grid-template-rows:1fr 1fr} }
+  @media(max-width:1100px){ .board{column-count:3} .info-grid{grid-template-columns:repeat(2,1fr)} }
+  @media(max-width:760px){
+    .whole{grid-template-columns:1fr} .whole-media{order:-1}
+    .whole-media img{aspect-ratio:16/10}
+  }
+  @media(max-width:620px){
+    .board{column-count:2}
+    .info-grid{grid-template-columns:1fr}
+    .glaze-grid{grid-template-columns:repeat(3,1fr)}
+    .wa-float span{display:none}
+  }
+  @media(max-width:380px){ .glaze-grid{grid-template-columns:repeat(2,1fr)} }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-bg">
+    <div class="hcol"><img id="himgA" src="assets/food-coffee.png" alt=""></div>
+    <div class="hcol"><img id="himgB" src="assets/food-steak.png" alt=""></div>
+  </div>
+  <div class="hero-scrim"></div>
+  <div class="hero-inner" id="heroInner">
+    <img class="hero-logo" src="assets/logo-cream.png" alt="TENTÁ Gres">
+    <p class="hero-tag">Cerámica para la mesa</p>
+  </div>
+  <p class="hero-foot">Hecho a mano<span>·</span>A pedido</p>
+</section>
+
+<!-- BANDA FULL-FRAME -->
+<div class="band reveal">
+  <img data-parallax="-0.08" src="assets/food-soup.png" alt="Sopa en cuenco de gres">
+  <span class="cap">Recién hecho</span>
+</div>
+
+<!-- MOODBOARD -->
+<section id="piezas">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">El estilo</p>
+      <h2>Lo que estamos haciendo</h2>
+      <p>No trabajamos con stock fijo: esto es una muestra del estilo de nuestras piezas. ¿Te gusta algo? Escribinos y lo hacemos para vos, en la forma, el esmalte y la cantidad que quieras.</p>
+    </div>
+    <div class="board" id="board"></div>
+  </div>
+</section>
+
+<!-- BANDA FULL-FRAME -->
+<div class="band reveal">
+  <img data-parallax="-0.08" src="assets/food-croissant.png" alt="Plato de gres con medialuna">
+  <span class="cap">Para compartir</span>
+</div>
+
+<!-- ESMALTES -->
+<section id="esmaltes">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <p class="eyebrow">La paleta</p>
+      <h2>Esmaltes</h2>
+      <p>Desarrollamos nuestros propios esmaltes. Combiná cualquier forma con cualquier color.</p>
+    </div>
+    <div class="glaze-grid" id="glazes"></div>
+  </div>
+</section>
+
+<!-- BANDA FULL-FRAME -->
+<div class="band reveal">
+  <img data-parallax="-0.08" src="assets/food-ossobuco.png" alt="Osso buco en cuenco de gres">
+  <span class="cap">Cocina de verdad</span>
+</div>
+
+<!-- CÓMO TRABAJAMOS -->
+<div class="info-wrap">
+  <section style="padding-bottom:clamp(40px,6vw,80px)">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Cómo trabajamos</p>
+        <h2>Piezas a pedido, sin vueltas</h2>
+        <p>Trabajamos por encargo. Te contamos lo concreto para que no haya sorpresas.</p>
+      </div>
+      <div class="info-grid reveal">
+        <div class="info"><div class="k">01</div><h3>Hecho a pedido</h3><p>No tenemos stock fijo. Cada pieza se tornea y esmalta especialmente para vos.</p></div>
+        <div class="info"><div class="k">02</div><h3>Tiempo de producción</h3><p>Aproximadamente 3 a 4 semanas, según la pieza y la cantidad. Te confirmamos al encargar.</p></div>
+        <div class="info"><div class="k">03</div><h3>Seña del 50%</h3><p>Para arrancar el pedido pedimos un 50% de adelanto. El 50% restante, al entregar.</p></div>
+        <div class="info"><div class="k">04</div><h3>Envíos</h3><p>Enviamos a todo el país. También podés retirar por nuestro local.</p></div>
+        <div class="info"><div class="k">05</div><h3>Uso y cuidado</h3><p>Gres de alta temperatura: apto microondas y lavavajillas.</p></div>
+        <div class="info"><div class="k">06</div><h3>A medida</h3><p>Formas, colores y cantidades personalizadas. También regalos corporativos.</p></div>
+      </div>
+
+      <!-- MAYORISTA -->
+      <div class="whole reveal" id="mayorista">
+        <div>
+          <p class="eyebrow">Mayorista</p>
+          <h2>Para cafés, restaurantes y comercios</h2>
+          <p>Producimos líneas de vajilla por volumen con precios especiales. Coordinamos formas, esmaltes, cantidades y tiempos según tu proyecto.</p>
+          <ul>
+            <li>Precios por volumen</li>
+            <li>Líneas reproducibles en el tiempo</li>
+            <li>Vajilla a medida para tu carta</li>
+          </ul>
+          <a class="btn btn-wa" data-wa="Hola Tentá 👋 Soy comercio/gastronomía y quiero consultar por pedidos mayoristas.">
+            <svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 3C9.4 3 4 8.4 4 15c0 2.1.6 4.2 1.6 6L4 29l8.2-1.6c1.7.9 3.6 1.4 5.6 1.4h.2c6.6 0 12-5.4 12-12S22.6 3 16 3z"/></svg>
+            Consultar mayorista
+          </a>
+        </div>
+        <div class="whole-media"><img src="assets/food-risotto.png" alt="Vajilla de gres en uso"></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- CONTACTO -->
+<section class="contact">
+  <div class="wrap">
+    <div class="reveal">
+      <img src="assets/logo-dark.png" alt="Tentá Gres">
+      <h2>Hagamos tu pedido</h2>
+      <p>Contanos qué tenés en mente — una pieza, un juego para tu casa o una línea para tu local — y lo armamos juntos por WhatsApp.</p>
+      <div class="cta">
+        <a class="btn btn-wa" data-wa="Hola Tentá 👋 Quería hacer un pedido / consulta.">
+          <svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 3C9.4 3 4 8.4 4 15c0 2.1.6 4.2 1.6 6L4 29l8.2-1.6c1.7.9 3.6 1.4 5.6 1.4h.2c6.6 0 12-5.4 12-12S22.6 3 16 3z"/></svg>
+          Escribinos por WhatsApp
+        </a>
+        <a class="btn" href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+      </div>
+      <a class="mail" href="mailto:hola@tenta.com">hola@tenta.com</a>
+    </div>
+  </div>
+</section>
+
+<div class="foot">
+  <img src="assets/logo-dark.png" alt="Tentá Gres">
+  <small>Hecho a mano · Gres · Pedidos por WhatsApp</small>
+</div>
+
+<a class="wa-float" data-wa="Hola Tentá 👋 Quería hacer un pedido.">
+  <svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 3C9.4 3 4 8.4 4 15c0 2.1.6 4.2 1.6 6L4 29l8.2-1.6c1.7.9 3.6 1.4 5.6 1.4h.2c6.6 0 12-5.4 12-12S22.6 3 16 3z"/></svg>
+  <span>Pedir por WhatsApp</span>
+</a>
+
+<script>
+  /* ====== CONFIG — reemplazá por el número real (internacional, sin +) ====== */
+  const WHATSAPP_NUMBER = "59899123456";
+  const SAMPLE_IMG = "assets/hero-cups.png"; /* una sola foto de muestra, repetida */
+
+  /* Moodboard: [imagen, categoría, proporción] — tamaños variados para dar ritmo editorial */
+  const TILES = [
+    ["assets/food-coffee.png","Tazas","3 / 4"],
+    ["assets/food-yogurt.png","Cuencos","4 / 5"],
+    ["assets/food-stew.png","Bowls","3 / 2"],
+    ["assets/food-olives.png","Platitos","1 / 1"],
+    ["assets/food-risotto.png","Bowls","4 / 5"],
+    ["assets/food-croissant.png","Platos","3 / 4"],
+    ["assets/food-soup.png","Cuencos","3 / 2"],
+    ["assets/bowls-sand.jpg","Cuencos","3 / 4"],
+    ["assets/hero-cups.png","Cuencos","4 / 3"],
+    ["assets/food-coffee.png","Tazas","1 / 1"],
+    ["assets/food-risotto.png","Bowls","3 / 4"],
+    ["assets/food-yogurt.png","Cuencos","3 / 4"],
+    ["assets/glazes.png","Esmaltes","4 / 5"],
+    ["assets/food-croissant.png","Platos","4 / 5"],
+  ];
+
+  const GLAZES = [
+    ["Hueso","#EAE2D2",""],["Arena","#CDB99A",""],["Trigo","#C6A977",""],["Miel","#B98A42",""],
+    ["Mostaza","#9C7F2E","moteado"],["Terracota","#A8603F",""],["Óxido","#8C4A2F","moteado"],["Tierra","#6B4A32",""],
+    ["Chocolate","#43301F",""],["Salvia","#9DAA8E",""],["Musgo","#8A9A6B","moteado"],["Oliva","#6E7A5F",""],
+    ["Bosque","#3E5141","moteado"],["Celeste Humo","#A9B7B8",""],["Azul Piedra","#5B6B72","moteado"],["Azul Profundo","#33424E","moteado"],
+    ["Gris Ceniza","#8A857B",""],["Perla","#E6E0D4","brillante"],["Blanco Mate","#EFEBE2",""],["Negro Mate","#2A2724",""],
+  ];
+
+  const waLink = msg => "https://wa.me/"+WHATSAPP_NUMBER+"?text="+encodeURIComponent(msg);
+  const WA_SM = '<svg viewBox="0 0 32 32" fill="currentColor"><path d="M16 3C9.4 3 4 8.4 4 15c0 2.1.6 4.2 1.6 6L4 29l8.2-1.6c1.7.9 3.6 1.4 5.6 1.4h.2c6.6 0 12-5.4 12-12S22.6 3 16 3z"/></svg>';
+
+  /* Moodboard */
+  document.getElementById("board").innerHTML = TILES.map(([img,cat,ar],i)=>`
+    <a class="tile reveal" style="transition-delay:${(i%4)*70}ms"
+       href="${waLink('Hola Tentá 👋 Me gustó el estilo de sus '+cat+'. ¿Me contás más?')}" target="_blank" rel="noopener">
+      <img src="${img}" alt="${cat}" style="aspect-ratio:${ar}" loading="lazy">
+      <div class="ov"><span class="t">${cat}</span><span class="s">${WA_SM} Pedir por WhatsApp</span></div>
+    </a>`).join("");
+
+  /* Esmaltes */
+  document.getElementById("glazes").innerHTML = GLAZES.map(([n,col,note],i)=>`
+    <a class="glaze reveal" style="transition-delay:${(i%6)*55}ms" href="${waLink('Hola Tentá 👋 Me interesa el esmalte: '+n+'. ¿En qué formas lo puedo pedir?')}" target="_blank" rel="noopener">
+      <span class="chip" style="background:${col}"></span>
+      <span class="gn">${n}</span>
+      <span class="gt">${note||''}</span>
+    </a>`).join("");
+
+  document.querySelectorAll("[data-wa]").forEach(el=>{
+    el.setAttribute("href", waLink(el.getAttribute("data-wa")));
+    el.setAttribute("target","_blank"); el.setAttribute("rel","noopener");
+  });
+
+  /* Scroll suave + parallax del hero (easing continuo tipo ko-hyo) */
+  const hi=document.getElementById("heroInner");
+  const imgA=document.getElementById("himgA"), imgB=document.getElementById("himgB");
+  const parallaxEls=[...document.querySelectorAll("[data-parallax]")];
+  let target=window.scrollY||0, cur=target;
+  window.addEventListener("scroll",()=>{ target=window.scrollY; },{passive:true});
+  function tick(){
+    cur += (target-cur)*0.085;
+    if(Math.abs(target-cur)<0.08) cur=target;
+    const y=cur;
+    imgA.style.transform=`translateY(${y*-0.05}px) scale(1.05)`;
+    imgB.style.transform=`translateY(${y*-0.12}px) scale(1.05)`;
+    hi.style.transform=`translateY(${y*0.22}px)`;
+    hi.style.opacity=Math.max(0,1-y/560);
+    const vh=window.innerHeight;
+    parallaxEls.forEach(el=>{
+      const r=el.getBoundingClientRect();
+      if(r.bottom<-40||r.top>vh+40) return;
+      const center=r.top + r.height/2 - vh/2;
+      const f=parseFloat(el.dataset.parallax)||-0.08;
+      el.style.transform=`translateY(${(center*f).toFixed(1)}px) scale(1.08)`;
+    });
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+  /* Reveal */
+  const io=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } });
+  },{threshold:.08,rootMargin:"0px 0px -12% 0px"});
+  document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
