@@ -85,8 +85,8 @@
   .sec-head.lead p{font-size:clamp(17px,2vw,22px);margin-top:clamp(18px,2.4vw,30px);max-width:34ch}
   .sec-head.lead .eyebrow{margin-bottom:clamp(18px,2.4vw,28px)}
 
-  /* Moodboard (masonry) */
-  .board{column-count:4;column-gap:clamp(12px,1.6vw,22px)}
+  /* Colección: grilla en filas, todas las fotos en 3:2 */
+  .board{display:grid;grid-template-columns:repeat(4,1fr);gap:0 clamp(12px,1.6vw,22px)}
   .tile{break-inside:avoid;margin:0 0 clamp(12px,1.6vw,22px);position:relative;overflow:hidden;
     border-radius:clamp(16px,1.8vw,26px);display:block}
   .tile img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
@@ -156,9 +156,9 @@
   @media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.hero-inner{transform:none!important;opacity:1!important}}
 
   @media(max-width:620px){ .hero-bg{grid-template-columns:1fr;grid-template-rows:1fr 1fr} }
-  @media(max-width:1100px){ .board{column-count:3} }
+  @media(max-width:1100px){ .board{grid-template-columns:repeat(3,1fr)} }
   @media(max-width:620px){
-    .board{column-count:2}
+    .board{grid-template-columns:repeat(2,1fr)}
     .wa-float span{display:none}
   }
 </style>
@@ -221,21 +221,22 @@
   const GALLERIES = {
     "Plato Duna": ["assets/piezas/plato-duna-1.jpg","assets/piezas/plato-duna-2.jpg","assets/piezas/plato-duna-3.jpg"],
   };
+  /* Orden: platos, bowls, ensaladeras, tazas */
   const TILES = [
     ["assets/p-plato-duna.jpg","Plato Duna","Plato de postre","1 / 1","Ø 20 cm"],
-    ["assets/p-bowl-laguna.jpg","Bowl Laguna","Bowl","3 / 2","Ø 15 × 7 cm"],
-    ["assets/p-vaso-avena.jpg","Vaso Avena","Vaso","4 / 3","Ø 8 × 10 cm"],
-    ["assets/p-bowl-oliva.jpg","Bowl Oliva","Bowl bajo","1 / 1","Ø 16 × 5 cm"],
-    ["assets/p-fuente-salvia.jpg","Fuente Salvia","Fuente","3 / 2","Ø 30 cm"],
     ["assets/p-plato-salvia.jpg","Plato Salvia","Plato playo","4 / 3","Ø 26 cm"],
-    ["assets/p-cuenco-barro.jpg","Cuenco Barro","Cuenco","3 / 2","Ø 14 × 7 cm"],
+    ["assets/p-bowl-laguna.jpg","Bowl Laguna","Bowl","3 / 2","Ø 15 × 7 cm"],
+    ["assets/p-bowl-oliva.jpg","Bowl Oliva","Bowl bajo","1 / 1","Ø 16 × 5 cm"],
     ["assets/p-bowl-hueso.jpg","Bowl Hueso","Bowl","4 / 3","Ø 15 × 7 cm"],
-    ["assets/p-vaso-tierra.jpg","Vaso Tierra","Vaso","4 / 3","Ø 8 × 10 cm"],
-    ["assets/p-fuente-oceano.jpg","Fuente Océano","Fuente honda","3 / 2","Ø 28 × 6 cm"],
     ["assets/p-bowl-petroleo.jpg","Bowl Petróleo","Bowl","4 / 3","Ø 15 × 7 cm"],
     ["assets/p-bowl-arena.jpg","Bowl Arena","Bowl chico","1 / 1","Ø 12 × 6 cm"],
-    ["assets/p-fuente-arena.jpg","Fuente Arena","Fuente baja","3 / 2","Ø 30 × 4 cm"],
     ["assets/p-bowl-tostado.jpg","Bowl Tostado","Bowl","3 / 2","Ø 15 × 7 cm"],
+    ["assets/p-cuenco-barro.jpg","Cuenco Barro","Cuenco","3 / 2","Ø 14 × 7 cm"],
+    ["assets/p-fuente-salvia.jpg","Fuente Salvia","Fuente","3 / 2","Ø 30 cm"],
+    ["assets/p-fuente-oceano.jpg","Fuente Océano","Fuente honda","3 / 2","Ø 28 × 6 cm"],
+    ["assets/p-fuente-arena.jpg","Fuente Arena","Fuente baja","3 / 2","Ø 30 × 4 cm"],
+    ["assets/p-vaso-avena.jpg","Vaso Avena","Vaso","4 / 3","Ø 8 × 10 cm"],
+    ["assets/p-vaso-tierra.jpg","Vaso Tierra","Vaso","4 / 3","Ø 8 × 10 cm"],
   ];
 
   /* Portada: cada columna rota entre 3 fotos con crossfade; la derecha va desfasada
@@ -267,7 +268,7 @@
   document.getElementById("board").innerHTML = TILES.map(([img,name,kind,ar,size],i)=>`
     <div class="piece reveal" style="transition-delay:${(i%4)*70}ms">
       <div class="tile has-gal" data-name="${name}" data-kind="${kind} · ${size}" data-img="${img}">
-        <img src="${img}" alt="${name}" style="aspect-ratio:${ar}" loading="lazy">
+        <img src="${img}" alt="${name}" style="aspect-ratio:3 / 2" loading="lazy">
         <span class="more">Ver fotos</span>
       </div>
       <span class="pn">${name}</span><span class="pk">${kind} · ${size}</span>
