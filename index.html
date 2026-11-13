@@ -79,6 +79,11 @@
   .sec-head h2{font-size:clamp(26px,4.4vw,50px);letter-spacing:.01em;line-height:1.02}
   .sec-head p{margin:16px 0 0;color:var(--soft);font-size:clamp(15px,1.7vw,17px);line-height:1.6}
   .sec-head .eyebrow{font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--clay);margin:0 0 16px}
+  /* Encabezado principal (único texto de la página) */
+  .sec-head.lead{max-width:none;margin:clamp(30px,6vw,90px) 0 clamp(40px,6vw,80px)}
+  .sec-head.lead h2{font-size:clamp(44px,8.5vw,128px);line-height:.95;letter-spacing:-.02em}
+  .sec-head.lead p{font-size:clamp(17px,2vw,22px);margin-top:clamp(18px,2.4vw,30px);max-width:34ch}
+  .sec-head.lead .eyebrow{margin-bottom:clamp(18px,2.4vw,28px)}
 
   /* Moodboard (masonry) */
   .board{column-count:4;column-gap:clamp(12px,1.6vw,22px)}
@@ -177,10 +182,10 @@
 <!-- MOODBOARD -->
 <section id="piezas">
   <div class="wrap">
-    <div class="sec-head reveal">
+    <div class="sec-head lead reveal">
       <p class="eyebrow">Colección actual</p>
-      <h2>Hacemos piezas a pedido</h2>
-      <p>Estas son algunas de las piezas que estamos haciendo ahora. Cualquiera se puede pedir en otro esmalte, otra medida o la cantidad que necesites.</p>
+      <h2>Hacemos piezas<br>a pedido</h2>
+      <p>Cualquiera de estas, en el esmalte, la medida y la cantidad que quieras.</p>
     </div>
     <div class="board" id="board"></div>
   </div>
