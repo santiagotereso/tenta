@@ -254,7 +254,8 @@
 
   /* Piezas: [imagen, nombre, tipo, proporción] — una foto por producto, sin comida */
   /* [imagen, nombre, tipo, proporción, medida (provisoria)] */
-  /* Galerías por pieza (se abren al hacer clic en la foto) */
+  /* Galerías por pieza (se abren al hacer clic en la foto).
+     Las piezas que no están acá muestran su foto del catálogo 3 veces hasta tener las fotos nuevas. */
   const GALLERIES = {
     "Plato Duna": ["assets/piezas/plato-duna-1.jpg","assets/piezas/plato-duna-2.jpg","assets/piezas/plato-duna-3.jpg"],
   };
@@ -318,9 +319,9 @@
   /* Moodboard */
   document.getElementById("board").innerHTML = TILES.map(([img,name,kind,ar,size],i)=>`
     <div class="piece reveal" style="transition-delay:${(i%4)*70}ms">
-      <div class="tile${GALLERIES[name]?' has-gal':''}" data-name="${name}" data-kind="${kind} · ${size}">
+      <div class="tile has-gal" data-name="${name}" data-kind="${kind} · ${size}" data-img="${img}">
         <img src="${img}" alt="${name}" style="aspect-ratio:${ar}" loading="lazy">
-        ${GALLERIES[name]?'<span class="more">Ver fotos</span>':''}
+        <span class="more">Ver fotos</span>
       </div>
       <span class="pn">${name}</span><span class="pk">${kind} · ${size}</span>
     </div>`).join("");
@@ -334,7 +335,7 @@
     [...vDots.children].forEach((d,i)=>d.classList.toggle("on", i===vK));
   };
   const vOpen = tile => {
-    const list = GALLERIES[tile.dataset.name];
+    const list = GALLERIES[tile.dataset.name] || Array(3).fill(tile.dataset.img);
     vStage.innerHTML = list.map(src=>`<img src="${src}" alt="${tile.dataset.name}">`).join("");
     vDots.innerHTML = list.map((_,i)=>`<button aria-label="Foto ${i+1}"></button>`).join("");
     vImgs = [...vStage.children];
