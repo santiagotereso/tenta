@@ -118,13 +118,6 @@
   .piece .pn{display:block;margin:12px 2px 0;font-size:15px}
   .piece .pk{display:block;margin:3px 2px 0;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--soft)}
 
-  /* Esmaltes */
-  .glaze-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:clamp(22px,2.6vw,38px) clamp(14px,2vw,30px)}
-  .glaze{text-align:center;width:calc((100% - 6 * clamp(14px,2vw,30px)) / 7)}
-  .chip{display:block;width:100%;aspect-ratio:1/1;filter:drop-shadow(0 8px 12px rgba(60,40,25,.18))}
-  .glaze .gn{display:block;font-size:14px;margin-top:14px}
-  .glaze .gt{display:block;font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;color:#8A8175;margin-top:3px;min-height:12px}
-
   /* A pedido */
 
   /* Ceramista */
@@ -174,7 +167,6 @@
   @media(max-width:1100px){ .board{column-count:3} }
   @media(max-width:620px){
     .board{column-count:2}
-    .glaze{width:calc((100% - 2 * clamp(14px,2vw,30px)) / 3)}
     .wa-float span{display:none}
   }
 </style>
@@ -204,18 +196,6 @@
       <p>Estas son algunas de las piezas que estamos haciendo ahora. Cualquiera se puede pedir en otro esmalte, otra medida o la cantidad que necesites.</p>
     </div>
     <div class="board" id="board"></div>
-  </div>
-</section>
-
-<!-- ESMALTES -->
-<section id="esmaltes">
-  <div class="wrap">
-    <div class="sec-head center reveal">
-      <p class="eyebrow">La paleta</p>
-      <h2>Esmaltes</h2>
-      <p>Desarrollamos nuestros propios esmaltes. Combiná cualquier forma con cualquier color.</p>
-    </div>
-    <div class="glaze-grid" id="glazes"></div>
   </div>
 </section>
 
@@ -282,15 +262,6 @@
     ["assets/p-plato-niebla.jpg","Plato Niebla","Plato playo","4 / 3","Ø 26 cm"],
     ["assets/p-plato-abismo.jpg","Plato Abismo","Plato playo","1 / 1","Ø 26 cm"],
     ["assets/p-bowl-tostado.jpg","Bowl Tostado","Bowl","3 / 2","Ø 15 × 7 cm"],
-  ];
-
-  /* Esmaltes de Belén (sacados de las piezas): [nombre, archivo en assets/esmaltes, nota] */
-  const GLAZES = [
-    ["Arena","arena","crema moteado"],["Hueso","hueso","crema cálido"],["Tostado","tostado","borde óxido"],
-    ["Barro","barro","sin esmaltar"],["Piedra","piedra","gris pardo"],["Oliva","oliva","verde ámbar"],
-    ["Musgo","musgo","verde claro"],["Salvia","salvia","verde gris"],["Petróleo","petroleo","verde azulado"],
-    ["Abismo","abismo","azul profundo"],["Cielo","cielo","azul gris"],["Océano","oceano","azul brillante"],
-    ["Laguna","laguna","celeste"],["Turquesa","turquesa","turquesa brillante"],
   ];
 
   /* Portada: cada columna rota entre 3 fotos con crossfade; la derecha va desfasada
@@ -378,14 +349,6 @@
       img.style.transformOrigin = `${(e.clientX-r.left)/r.width*100}% ${(e.clientY-r.top)/r.height*100}%`;
     });
   });
-
-  /* Esmaltes */
-  document.getElementById("glazes").innerHTML = GLAZES.map(([n,file,note],i)=>`
-    <div class="glaze reveal" style="transition-delay:${(i%7)*55}ms">
-      <img class="chip" src="assets/esmaltes/${file}.webp" alt="Esmalte ${n}" loading="lazy">
-      <span class="gn">${n}</span>
-      <span class="gt">${note||''}</span>
-    </div>`).join("");
 
   document.querySelectorAll("[data-wa]").forEach(el=>{
     el.setAttribute("href", waLink(el.getAttribute("data-wa")));
