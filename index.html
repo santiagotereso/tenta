@@ -223,23 +223,18 @@
   };
   const TILES = [
     ["assets/p-plato-duna.jpg","Plato Duna","Plato de postre","1 / 1","Ø 20 cm"],
-    ["assets/p-plato-piedra.jpg","Plato Piedra","Plato grande","3 / 2","Ø 28 cm"],
     ["assets/p-bowl-laguna.jpg","Bowl Laguna","Bowl","3 / 2","Ø 15 × 7 cm"],
     ["assets/p-vaso-avena.jpg","Vaso Avena","Vaso","4 / 3","Ø 8 × 10 cm"],
     ["assets/p-bowl-oliva.jpg","Bowl Oliva","Bowl bajo","1 / 1","Ø 16 × 5 cm"],
     ["assets/p-fuente-salvia.jpg","Fuente Salvia","Fuente","3 / 2","Ø 30 cm"],
     ["assets/p-plato-salvia.jpg","Plato Salvia","Plato playo","4 / 3","Ø 26 cm"],
     ["assets/p-cuenco-barro.jpg","Cuenco Barro","Cuenco","3 / 2","Ø 14 × 7 cm"],
-    ["assets/p-bowl-musgo.jpg","Bowl Musgo","Bowl","1 / 1","Ø 15 × 7 cm"],
     ["assets/p-bowl-hueso.jpg","Bowl Hueso","Bowl","4 / 3","Ø 15 × 7 cm"],
-    ["assets/p-plato-cielo.jpg","Plato Cielo","Plato playo","3 / 2","Ø 26 cm"],
     ["assets/p-vaso-tierra.jpg","Vaso Tierra","Vaso","4 / 3","Ø 8 × 10 cm"],
     ["assets/p-fuente-oceano.jpg","Fuente Océano","Fuente honda","3 / 2","Ø 28 × 6 cm"],
     ["assets/p-bowl-petroleo.jpg","Bowl Petróleo","Bowl","4 / 3","Ø 15 × 7 cm"],
     ["assets/p-bowl-arena.jpg","Bowl Arena","Bowl chico","1 / 1","Ø 12 × 6 cm"],
     ["assets/p-fuente-arena.jpg","Fuente Arena","Fuente baja","3 / 2","Ø 30 × 4 cm"],
-    ["assets/p-plato-niebla.jpg","Plato Niebla","Plato playo","4 / 3","Ø 26 cm"],
-    ["assets/p-plato-abismo.jpg","Plato Abismo","Plato playo","1 / 1","Ø 26 cm"],
     ["assets/p-bowl-tostado.jpg","Bowl Tostado","Bowl","3 / 2","Ø 15 × 7 cm"],
   ];
 
@@ -252,10 +247,9 @@
   const HERO = {
     hstackA: [[F("latte"),"50%"],[P("bowl-oliva"),"50%"],[F("carne"),"50%"],[P("bowl-laguna"),"40%"],
               [P("plato-duna"),"50%"],[F("peras"),"50%"],[P("fuente-oceano"),"50%"],[P("vaso-avena"),"40%"],
-              [F("tarta"),"50%"],[P("bowl-musgo"),"50%"]],
+              [F("tarta"),"50%"]],
     hstackB: [[F("tostadas"),"60%"],[P("bowl-tostado"),"10%"],[F("ravioles"),"50%"],[P("fuente-salvia"),"50%"],
-              [P("bowl-petroleo"),"50%"],[P("plato-cielo"),"30%"],[P("fuente-arena"),"50%"],[P("bowl-hueso"),"35%"],
-              [P("plato-niebla"),"40%"]],
+              [P("bowl-petroleo"),"50%"],[P("fuente-arena"),"50%"],[P("bowl-hueso"),"35%"]],
   };
   const HERO_STEP = 3200; /* ms que queda cada foto */
   Object.entries(HERO).forEach(([id,list],col)=>{
