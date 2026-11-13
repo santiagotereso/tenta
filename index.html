@@ -81,12 +81,35 @@
   .board{column-count:4;column-gap:clamp(12px,1.6vw,22px)}
   .tile{break-inside:avoid;margin:0 0 clamp(12px,1.6vw,22px);position:relative;overflow:hidden;
     border-radius:clamp(16px,1.8vw,26px);display:block}
-  .tile img{width:100%;height:100%;object-fit:cover;transition:transform 1s cubic-bezier(.2,.7,.2,1)}
-  /* Zoom: al pasar el mouse la foto se amplía dentro de su recuadro y sigue al cursor */
+  .tile img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+  /* Zoom suave al pasar el mouse; las piezas con galería se abren al hacer clic */
   @media(hover:hover) and (pointer:fine){
-    .tile{cursor:zoom-in}
-    .tile:hover img{transform:scale(2.4)}
+    .tile:hover img{transform:scale(1.12)}
   }
+  .tile.has-gal{cursor:pointer}
+  .tile .more{position:absolute;right:12px;bottom:12px;z-index:2;font-size:10px;letter-spacing:.16em;text-transform:uppercase;
+    padding:7px 11px;border-radius:999px;background:rgba(250,245,239,.82);color:var(--ink);backdrop-filter:blur(6px);
+    pointer-events:none}
+
+  /* Visor de pieza */
+  .viewer{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    padding:clamp(16px,4vw,48px);background:rgba(36,30,25,.94);opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
+  .viewer.open{opacity:1;visibility:visible}
+  .v-stage{position:relative;width:min(1100px,100%);aspect-ratio:3/2;max-height:72vh}
+  .v-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity .45s ease}
+  .v-stage img.on{opacity:1}
+  .v-cap{margin-top:clamp(16px,2.4vw,26px);text-align:center;color:#F5EEE4}
+  .v-cap .pn{display:block;font-size:clamp(18px,2vw,22px);font-weight:300}
+  .v-cap .pk{display:block;margin-top:5px;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:#C9B7A6}
+  .v-dots{display:flex;gap:8px;justify-content:center;margin-top:16px}
+  .v-dots button{width:8px;height:8px;padding:0;border:0;border-radius:50%;background:rgba(245,238,228,.35);cursor:pointer}
+  .v-dots button.on{background:#F5EEE4}
+  .v-btn{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;border:1px solid rgba(245,238,228,.35);
+    background:rgba(36,30,25,.35);color:#F5EEE4;font-size:22px;line-height:1;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center}
+  .v-btn:hover{background:#F5EEE4;color:var(--ink)}
+  .v-prev{left:clamp(8px,2vw,28px)} .v-next{right:clamp(8px,2vw,28px)}
+  .v-close{position:absolute;top:clamp(12px,2vw,24px);right:clamp(12px,2vw,24px);transform:none}
+  @media(max-width:620px){ .v-prev,.v-next{display:none} }
   .piece{break-inside:avoid;margin:0 0 clamp(18px,2.2vw,30px)}
   .piece .tile{margin:0}
   .piece .pn{display:block;margin:12px 2px 0;font-size:15px}
@@ -211,6 +234,15 @@
   <small>© 2026 TENTÁ Gres</small>
 </div>
 
+<div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Fotos de la pieza">
+  <button class="v-btn v-close" aria-label="Cerrar">&times;</button>
+  <button class="v-btn v-prev" aria-label="Foto anterior">&#8249;</button>
+  <button class="v-btn v-next" aria-label="Foto siguiente">&#8250;</button>
+  <div class="v-stage" id="vStage"></div>
+  <div class="v-dots" id="vDots"></div>
+  <div class="v-cap"><span class="pn" id="vName"></span><span class="pk" id="vKind"></span></div>
+</div>
+
 <a class="wa-float" data-wa="Hola Belén 👋 Quería hacerte un pedido.">
   <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
   <span>Hablame por WhatsApp</span>
@@ -222,6 +254,10 @@
 
   /* Piezas: [imagen, nombre, tipo, proporción] — una foto por producto, sin comida */
   /* [imagen, nombre, tipo, proporción, medida (provisoria)] */
+  /* Galerías por pieza (se abren al hacer clic en la foto) */
+  const GALLERIES = {
+    "Plato Duna": ["assets/piezas/plato-duna-1.jpg","assets/piezas/plato-duna-2.jpg","assets/piezas/plato-duna-3.jpg"],
+  };
   const TILES = [
     ["assets/p-plato-duna.jpg","Plato Duna","Plato de postre","1 / 1","Ø 20 cm"],
     ["assets/p-plato-piedra.jpg","Plato Piedra","Plato grande","3 / 2","Ø 28 cm"],
@@ -282,11 +318,53 @@
   /* Moodboard */
   document.getElementById("board").innerHTML = TILES.map(([img,name,kind,ar,size],i)=>`
     <div class="piece reveal" style="transition-delay:${(i%4)*70}ms">
-      <div class="tile">
+      <div class="tile${GALLERIES[name]?' has-gal':''}" data-name="${name}" data-kind="${kind} · ${size}">
         <img src="${img}" alt="${name}" style="aspect-ratio:${ar}" loading="lazy">
+        ${GALLERIES[name]?'<span class="more">Ver fotos</span>':''}
       </div>
       <span class="pn">${name}</span><span class="pk">${kind} · ${size}</span>
     </div>`).join("");
+
+  /* Visor: fotos de la pieza con flechas, puntos, teclado y deslizar en el celular */
+  const viewer = document.getElementById("viewer"), vStage = document.getElementById("vStage"), vDots = document.getElementById("vDots");
+  let vImgs = [], vK = 0;
+  const vShow = k => {
+    vK = (k + vImgs.length) % vImgs.length;
+    vImgs.forEach((im,i)=>im.classList.toggle("on", i===vK));
+    [...vDots.children].forEach((d,i)=>d.classList.toggle("on", i===vK));
+  };
+  const vOpen = tile => {
+    const list = GALLERIES[tile.dataset.name];
+    vStage.innerHTML = list.map(src=>`<img src="${src}" alt="${tile.dataset.name}">`).join("");
+    vDots.innerHTML = list.map((_,i)=>`<button aria-label="Foto ${i+1}"></button>`).join("");
+    vImgs = [...vStage.children];
+    [...vDots.children].forEach((d,i)=>d.onclick = ()=>vShow(i));
+    document.getElementById("vName").textContent = tile.dataset.name;
+    document.getElementById("vKind").textContent = tile.dataset.kind;
+    vShow(0);
+    viewer.classList.add("open");
+    document.body.style.overflow = "hidden";
+  };
+  const vClose = () => { viewer.classList.remove("open"); document.body.style.overflow = ""; };
+  document.querySelectorAll(".tile.has-gal").forEach(t=>t.addEventListener("click",()=>vOpen(t)));
+  viewer.querySelector(".v-prev").onclick = ()=>vShow(vK-1);
+  viewer.querySelector(".v-next").onclick = ()=>vShow(vK+1);
+  viewer.querySelector(".v-close").onclick = vClose;
+  viewer.addEventListener("click",e=>{ if(e.target===viewer) vClose(); });
+  document.addEventListener("keydown",e=>{
+    if(!viewer.classList.contains("open")) return;
+    if(e.key==="Escape") vClose();
+    if(e.key==="ArrowLeft") vShow(vK-1);
+    if(e.key==="ArrowRight") vShow(vK+1);
+  });
+  let tx = null;
+  vStage.addEventListener("touchstart",e=>{ tx = e.touches[0].clientX; },{passive:true});
+  vStage.addEventListener("touchend",e=>{
+    if(tx===null) return;
+    const dx = e.changedTouches[0].clientX - tx;
+    if(Math.abs(dx) > 40) vShow(vK + (dx < 0 ? 1 : -1));
+    tx = null;
+  });
 
   /* Zoom: el punto bajo el cursor queda como centro de la ampliación */
   document.querySelectorAll(".tile").forEach(tile=>{
