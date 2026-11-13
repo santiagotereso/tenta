@@ -257,12 +257,13 @@
      para que siempre se vean combinaciones distintas. [imagen, encuadre horizontal] */
   const F = n => "assets/food-"+n+".jpg";
   const P = n => "assets/p-"+n+".jpg";
+  /* Las piezas que ya aparecen con comida (Vaso Tierra, Plato Abismo, Cuenco Barro,
+     Plato Salvia, Plato Piedra, Bowl Arena) van solo en su versión con comida */
   const HERO = {
-    hstackA: [[P("vaso-tierra"),"80%"],[F("latte"),"50%"],[P("plato-abismo"),"50%"],[P("bowl-oliva"),"50%"],
-              [F("carne"),"50%"],[P("bowl-laguna"),"40%"],[P("plato-duna"),"50%"],[F("peras"),"50%"],
-              [P("fuente-oceano"),"50%"],[P("vaso-avena"),"40%"],[F("tarta"),"50%"],[P("bowl-musgo"),"50%"]],
-    hstackB: [[F("tostadas"),"60%"],[P("bowl-tostado"),"10%"],[F("ravioles"),"50%"],[P("plato-piedra"),"50%"],
-              [P("bowl-arena"),"50%"],[P("fuente-salvia"),"50%"],[P("plato-salvia"),"30%"],[P("cuenco-barro"),"50%"],
+    hstackA: [[F("latte"),"50%"],[P("bowl-oliva"),"50%"],[F("carne"),"50%"],[P("bowl-laguna"),"40%"],
+              [P("plato-duna"),"50%"],[F("peras"),"50%"],[P("fuente-oceano"),"50%"],[P("vaso-avena"),"40%"],
+              [F("tarta"),"50%"],[P("bowl-musgo"),"50%"]],
+    hstackB: [[F("tostadas"),"60%"],[P("bowl-tostado"),"10%"],[F("ravioles"),"50%"],[P("fuente-salvia"),"50%"],
               [P("bowl-petroleo"),"50%"],[P("plato-cielo"),"30%"],[P("fuente-arena"),"50%"],[P("bowl-hueso"),"35%"],
               [P("plato-niebla"),"40%"]],
   };
