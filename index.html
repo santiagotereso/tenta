@@ -147,7 +147,7 @@
   .v-dots{display:flex;gap:8px;justify-content:center;margin-top:16px}
   .v-dots button{width:8px;height:8px;padding:0;border:0;border-radius:50%;background:rgba(245,238,228,.35);cursor:pointer}
   .v-dots button.on{background:#F5EEE4}
-  .v-btn{position:absolute;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;border:1px solid rgba(245,238,228,.35);
+  .v-btn{position:absolute;z-index:3;top:50%;transform:translateY(-50%);width:46px;height:46px;border-radius:50%;border:1px solid rgba(245,238,228,.35);
     background:rgba(36,30,25,.35);color:#F5EEE4;font-size:22px;line-height:1;cursor:pointer;transition:.2s;display:flex;align-items:center;justify-content:center}
   .v-btn:hover{background:#F5EEE4;color:var(--ink)}
   .v-prev{left:clamp(8px,2vw,28px)} .v-next{right:clamp(8px,2vw,28px)}
@@ -282,6 +282,8 @@
 
 <div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Foto de la pieza">
   <button class="v-btn v-close" aria-label="Cerrar">&times;</button>
+  <button class="v-btn v-prev" aria-label="Pieza anterior">&#8249;</button>
+  <button class="v-btn v-next" aria-label="Pieza siguiente">&#8250;</button>
   <div class="v-stage" id="vStage">
     <img id="vImg" alt="">
     <div class="v-cap"><span class="pn" id="vName"></span><span class="pk" id="vKind"></span></div>
@@ -377,20 +379,44 @@
       <span class="pn">${name}</span><span class="pk">${cells}</span>
     </div>`;}).join("");
 
-  /* Visor: una sola foto grande full-frame + nombre, tamaño y precio */
+  /* Visor: una sola foto grande full-frame + nombre, tamaño y precio.
+     Flechas, teclado y deslizar en el celular recorren todo el catálogo. */
   const viewer = document.getElementById("viewer"), vImg = document.getElementById("vImg");
-  const vOpen = tile => {
+  const vTiles = [...document.querySelectorAll(".tile.has-gal")];
+  let vK = 0;
+  const vShow = k => {
+    vK = (k + vTiles.length) % vTiles.length;
+    const tile = vTiles[vK];
     vImg.src = tile.dataset.img; vImg.alt = tile.dataset.name;
     document.getElementById("vName").textContent = tile.dataset.name;
     document.getElementById("vKind").textContent = tile.dataset.kind;
+    [vK-1, vK+1].forEach(j => { new Image().src = vTiles[(j + vTiles.length) % vTiles.length].dataset.img; });
+  };
+  const vOpen = tile => {
+    vShow(vTiles.indexOf(tile));
     viewer.classList.add("open");
     document.body.style.overflow = "hidden";
   };
   const vClose = () => { viewer.classList.remove("open"); document.body.style.overflow = ""; };
-  document.querySelectorAll(".tile.has-gal").forEach(t=>t.addEventListener("click",()=>vOpen(t)));
+  vTiles.forEach(t=>t.addEventListener("click",()=>vOpen(t)));
   viewer.querySelector(".v-close").onclick = vClose;
+  viewer.querySelector(".v-prev").onclick = ()=>vShow(vK-1);
+  viewer.querySelector(".v-next").onclick = ()=>vShow(vK+1);
   viewer.addEventListener("click",e=>{ if(e.target===viewer) vClose(); });
-  document.addEventListener("keydown",e=>{ if(viewer.classList.contains("open") && e.key==="Escape") vClose(); });
+  document.addEventListener("keydown",e=>{
+    if(!viewer.classList.contains("open")) return;
+    if(e.key==="Escape") vClose();
+    if(e.key==="ArrowLeft") vShow(vK-1);
+    if(e.key==="ArrowRight") vShow(vK+1);
+  });
+  let tx = null;
+  viewer.addEventListener("touchstart",e=>{ tx = e.touches[0].clientX; },{passive:true});
+  viewer.addEventListener("touchend",e=>{
+    if(tx===null) return;
+    const dx = e.changedTouches[0].clientX - tx;
+    if(Math.abs(dx) > 40) vShow(vK + (dx < 0 ? 1 : -1));
+    tx = null;
+  });
 
   /* Zoom: el punto bajo el cursor queda como centro de la ampliación (salvo las .cut) */
   document.querySelectorAll(".tile:not(.cut)").forEach(tile=>{
