@@ -92,6 +92,12 @@
   /* Secciones de texto más compactas (más cerca entre sí) */
   .text-sec{padding-top:clamp(30px,4.5vw,58px);padding-bottom:clamp(30px,4.5vw,58px)}
   .text-sec.right{text-align:right}
+  /* Línea fina que acompaña a los textos laterales, del lado en que están alineados */
+  .tx-box{position:relative}
+  .text-sec.right .tx-box{width:fit-content;max-width:min(100%,940px);margin-left:auto}
+  .text-sec:not(.right) .tx-box{width:fit-content;max-width:min(100%,940px)}
+  .tx-box{padding-left:clamp(20px,2.6vw,36px);border-left:1px solid rgba(160,126,99,.45)}
+  .text-sec.right .tx-box{padding-left:0;border-left:0;padding-right:clamp(20px,2.6vw,36px);border-right:1px solid rgba(160,126,99,.45)}
   /* título pegado a su texto; Por encargo y Material, juntos */
   .text-sec .sec-head{margin-bottom:clamp(14px,1.8vw,22px)}
   .text-sec .prose{margin-top:0}
@@ -227,13 +233,15 @@
 <!-- INTRO / MANIFIESTO -->
 <section id="intro" class="text-sec right" style="padding-top:clamp(66px,10vw,140px)">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <p class="eyebrow">Tentá Gres</p>
-      <h2>Para quienes aman cocinar, servir y compartir</h2>
-    </div>
-    <div class="prose reveal">
-      <p>Hacemos vajilla de gres pensada para la gastronomía: formas, colores y texturas que se relacionan con la comida.</p>
-      <p>Cada pieza está hecha a mano, así que ninguna es igual a otra. Pequeñas variaciones que la vuelven única.</p>
+    <div class="tx-box">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Tentá Gres</p>
+        <h2>Para quienes aman cocinar, servir y compartir</h2>
+      </div>
+      <div class="prose reveal">
+        <p>Hacemos vajilla de gres pensada para la gastronomía: formas, colores y texturas que se relacionan con la comida.</p>
+        <p>Cada pieza está hecha a mano, así que ninguna es igual a otra. Pequeñas variaciones que la vuelven única.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -253,10 +261,12 @@
 <!-- VAJILLA PARA TU PROYECTO -->
 <section id="proyecto" class="text-sec right">
   <div class="wrap">
-    <div class="sec-head reveal" style="max-width:640px;margin-left:auto">
-      <p class="eyebrow">Por encargo</p>
-      <h2>Vajilla para tu proyecto</h2>
-      <p>Trabajamos por encargo para restaurantes, cafeterías y otros espacios gastronómicos. Ofrecemos distintas formas, tamaños y esmaltes y evaluamos propuestas según la identidad de cada local.</p>
+    <div class="tx-box">
+      <div class="sec-head reveal" style="max-width:640px;margin-left:auto">
+        <p class="eyebrow">Por encargo</p>
+        <h2>Vajilla para tu proyecto</h2>
+        <p>Trabajamos por encargo para restaurantes, cafeterías y otros espacios gastronómicos. Ofrecemos distintas formas, tamaños y esmaltes y evaluamos propuestas según la identidad de cada local.</p>
+      </div>
     </div>
   </div>
 </section>
@@ -264,13 +274,15 @@
 <!-- SOBRE EL GRES -->
 <section id="gres" class="text-sec">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <p class="eyebrow">Material</p>
-      <h2>Gres</h2>
-    </div>
-    <div class="prose reveal">
-      <p>El gres es un material cerámico de alta temperatura, resistente y de baja porosidad, ideal para la elaboración de vajilla de uso cotidiano.</p>
-      <p>Su durabilidad y resistencia lo hacen adecuado tanto para el hogar como para el uso gastronómico.</p>
+    <div class="tx-box">
+      <div class="sec-head reveal">
+        <p class="eyebrow">Material</p>
+        <h2>Gres</h2>
+      </div>
+      <div class="prose reveal">
+        <p>El gres es un material cerámico de alta temperatura, resistente y de baja porosidad, ideal para la elaboración de vajilla de uso cotidiano.</p>
+        <p>Su durabilidad y resistencia lo hacen adecuado tanto para el hogar como para el uso gastronómico.</p>
+      </div>
     </div>
   </div>
 </section>
