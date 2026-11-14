@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TENTÁ · Catálogo editable</title>
+<style>
+  :root{
+    --bg:#E8DBD3;--ink:#2A241F;--soft:#7C6F64;--line:#D7C8BC;--clay:#A07E63;--paper:#F3EBE3;--ok:#5B7A4F;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;line-height:1.5}
+  .wrap{max-width:960px;margin:0 auto;padding:44px 24px 120px}
+  h1{font-weight:300;font-size:clamp(26px,4vw,40px);margin:0 0 6px;letter-spacing:.01em}
+  .sub{color:var(--soft);font-size:15px;margin:0 0 6px}
+  .hint{color:var(--clay);font-size:13px;margin:0 0 26px}
+
+  .bar{position:sticky;top:0;z-index:5;background:rgba(232,219,211,.92);backdrop-filter:blur(10px);
+    display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:14px 0;margin-bottom:12px;border-bottom:1px solid var(--line)}
+  .btn{font-size:12px;letter-spacing:.1em;text-transform:uppercase;padding:11px 18px;border-radius:999px;
+    border:1px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer;transition:.2s}
+  .btn:hover{background:var(--ink);color:var(--bg)}
+  .btn.primary{background:var(--ink);color:var(--bg)}
+  .btn.primary:hover{opacity:.85}
+  .saved{font-size:12px;color:var(--ok);opacity:0;transition:.3s}
+  .saved.on{opacity:1}
+
+  .row{display:grid;grid-template-columns:62px 1.3fr 1fr 1fr 120px 34px;gap:14px;align-items:center;
+    background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:10px}
+  .row .thumb{width:62px;height:62px;border-radius:12px;object-fit:cover;background:var(--bg)}
+  .row input{font-family:inherit;font-size:15px;color:var(--ink);background:transparent;
+    border:0;border-bottom:1px dashed transparent;padding:6px 2px;width:100%;transition:.15s}
+  .row input:hover{border-bottom-color:var(--line)}
+  .row input:focus{outline:0;border-bottom-color:var(--clay)}
+  .row .name{font-size:17px}
+  .row .cat,.row .dim{color:var(--soft);font-size:14px}
+  .lbl{display:block;font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--clay);margin:0 2px 2px}
+  .price-wrap{display:flex;align-items:center;gap:4px}
+  .price-wrap .cur{color:var(--soft);font-size:14px}
+  .row .price{width:80px;text-align:right;font-variant-numeric:tabular-nums}
+  .del{border:0;background:transparent;color:var(--soft);font-size:20px;cursor:pointer;line-height:1;height:34px}
+  .del:hover{color:#a4442f}
+
+  .foot{margin-top:28px;color:var(--soft);font-size:13px;line-height:1.6}
+  .out{width:100%;min-height:140px;margin-top:14px;font-family:ui-monospace,Menlo,monospace;font-size:12.5px;
+    background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px;color:var(--ink);display:none;white-space:pre}
+  a.back{color:var(--clay);font-size:13px;text-decoration:none}
+  a.back:hover{text-decoration:underline}
+  .colhead{display:grid;grid-template-columns:62px 1.3fr 1fr 1fr 120px 34px;gap:14px;padding:0 14px 6px;
+    font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--clay)}
+
+  @media(max-width:680px){
+    .colhead{display:none}
+    .row{grid-template-columns:52px 1fr 34px;row-gap:6px}
+    .row .thumb{width:52px;height:52px}
+    .row .c-name{grid-column:2} .row .c-cat{grid-column:2} .row .c-dim{grid-column:2} .row .c-price{grid-column:2}
+    .del{grid-column:3;grid-row:1}
+    .lbl{display:block}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← Volver al sitio</a>
+  <h1>Catálogo <span style="color:var(--clay)">editable</span></h1>
+  <p class="sub">Las mismas piezas del sitio. Editá nombre, categoría, medida y precio — se guarda solo en este navegador.</p>
+  <p class="hint">Cuando termines, tocá “Copiar catálogo” y pegámelo por acá para actualizar el sitio.</p>
+
+  <div class="bar">
+    <button class="btn primary" id="copy">Copiar catálogo</button>
+    <button class="btn" id="add">+ Agregar pieza</button>
+    <button class="btn" id="reset">Restablecer</button>
+    <span class="saved" id="saved">Guardado ✓</span>
+  </div>
+
+  <div class="colhead"><span></span><span>Nombre</span><span>Categoría</span><span>Medida</span><span>Precio</span><span></span></div>
+  <div id="list"></div>
+
+  <div class="foot">
+    <p>El precio está vacío por defecto — completalo si querés mostrarlo en el sitio. Precios en pesos argentinos.</p>
+    <textarea class="out" id="out" readonly></textarea>
+  </div>
+</div>
+
+<script>
+  /* Piezas reales del sitio: [imagen, nombre, categoría, medida] */
+  const DEFAULT = [
+    ["assets/p-plato-duna.jpg","Plato Duna","Plato de postre","Ø 20 cm"],
+    ["assets/p-plato-piedra.jpg","Plato Piedra","Plato grande","Ø 28 cm"],
+    ["assets/p-bowl-laguna.jpg","Bowl Laguna","Bowl","Ø 15 × 7 cm"],
+    ["assets/p-vaso-avena.jpg","Vaso Avena","Vaso","Ø 8 × 10 cm"],
+    ["assets/p-bowl-oliva.jpg","Bowl Oliva","Bowl bajo","Ø 16 × 5 cm"],
+    ["assets/p-fuente-salvia.jpg","Fuente Salvia","Fuente","Ø 30 cm"],
+    ["assets/p-plato-salvia.jpg","Plato Salvia","Plato playo","Ø 26 cm"],
+    ["assets/p-cuenco-barro.jpg","Cuenco Barro","Cuenco","Ø 14 × 7 cm"],
+    ["assets/p-bowl-musgo.jpg","Bowl Musgo","Bowl","Ø 15 × 7 cm"],
+    ["assets/p-bowl-hueso.jpg","Bowl Hueso","Bowl","Ø 15 × 7 cm"],
+    ["assets/p-plato-cielo.jpg","Plato Cielo","Plato playo","Ø 26 cm"],
+    ["assets/p-vaso-tierra.jpg","Vaso Tierra","Vaso","Ø 8 × 10 cm"],
+    ["assets/p-fuente-oceano.jpg","Fuente Océano","Fuente honda","Ø 28 × 6 cm"],
+    ["assets/p-bowl-petroleo.jpg","Bowl Petróleo","Bowl","Ø 15 × 7 cm"],
+    ["assets/p-bowl-arena.jpg","Bowl Arena","Bowl chico","Ø 12 × 6 cm"],
+    ["assets/p-fuente-arena.jpg","Fuente Arena","Fuente baja","Ø 30 × 4 cm"],
+    ["assets/p-plato-niebla.jpg","Plato Niebla","Plato playo","Ø 26 cm"],
+    ["assets/p-plato-abismo.jpg","Plato Abismo","Plato playo","Ø 26 cm"],
+    ["assets/p-bowl-tostado.jpg","Bowl Tostado","Bowl","Ø 15 × 7 cm"],
+  ].map(([img,name,cat,dim])=>({img,name,cat,dim,price:0}));
+
+  const KEY="tenta_catalogo_v2";
+  const ARS=new Intl.NumberFormat('es-AR');
+  const $=s=>document.querySelector(s);
+  let data = load();
+
+  function load(){ try{const s=localStorage.getItem(KEY); if(s) return JSON.parse(s);}catch(e){} return structuredClone(DEFAULT); }
+  function save(){ localStorage.setItem(KEY, JSON.stringify(data)); flash(); }
+  function flash(){ const s=$("#saved"); s.classList.add("on"); clearTimeout(flash._t); flash._t=setTimeout(()=>s.classList.remove("on"),1200); }
+  const esc=s=>String(s).replace(/"/g,'&quot;');
+  const priceVal=p=>p.price?ARS.format(p.price):"";
+
+  function render(){
+    const list=$("#list"); list.innerHTML="";
+    data.forEach((p,i)=>{
+      const row=document.createElement("div"); row.className="row";
+      row.innerHTML=`
+        <img class="thumb" src="${p.img||'assets/logo-dark.png'}" alt="" onerror="this.style.opacity=.3">
+        <div class="c-name"><span class="lbl">Nombre</span><input class="name" value="${esc(p.name)}" data-i="${i}" data-f="name" placeholder="Nombre"></div>
+        <div class="c-cat"><span class="lbl">Categoría</span><input class="cat" value="${esc(p.cat)}" data-i="${i}" data-f="cat" placeholder="Categoría"></div>
+        <div class="c-dim"><span class="lbl">Medida</span><input class="dim" value="${esc(p.dim)}" data-i="${i}" data-f="dim" placeholder="Medida"></div>
+        <div class="c-price"><span class="lbl">Precio</span><div class="price-wrap"><span class="cur">$</span><input class="price" value="${priceVal(p)}" data-i="${i}" data-f="price" inputmode="numeric" placeholder="—"></div></div>
+        <button class="del" data-i="${i}" title="Eliminar">×</button>`;
+      list.appendChild(row);
+    });
+  }
+
+  document.addEventListener("input",e=>{
+    const el=e.target, i=el.dataset.i, f=el.dataset.f; if(i==null||!f) return;
+    if(f==="price"){ data[i].price=parseInt(el.value.replace(/\D/g,""),10)||0; }
+    else data[i][f]=el.value;
+    save();
+  });
+  document.addEventListener("blur",e=>{
+    if(e.target.classList?.contains("price")){ const i=e.target.dataset.i; e.target.value=priceVal(data[i]); }
+  },true);
+  document.addEventListener("click",e=>{
+    if(e.target.classList.contains("del")){ data.splice(+e.target.dataset.i,1); save(); render(); }
+  });
+
+  $("#add").onclick=()=>{ data.push({img:"",name:"Nueva pieza",cat:"",dim:"",price:0}); save(); render();
+    window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"}); };
+  $("#reset").onclick=()=>{ if(confirm("¿Volver al catálogo original del sitio? Se pierden tus cambios.")){ data=structuredClone(DEFAULT); save(); render(); } };
+  $("#copy").onclick=async()=>{
+    const txt=data.map(p=>`${p.name} — ${p.cat} — ${p.dim}${p.price?` — $${ARS.format(p.price)}`:""}`).join("\n");
+    const out=$("#out"); out.style.display="block"; out.value=txt;
+    try{ await navigator.clipboard.writeText(txt); $("#copy").textContent="¡Copiado!"; setTimeout(()=>$("#copy").textContent="Copiar catálogo",1500);}catch(e){ out.select(); }
+  };
+
+  render();
+</script>
+</body>
+</html>

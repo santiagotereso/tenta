@@ -6,7 +6,7 @@
 <title>TENTÁ · Gres — Vajilla para hogar y gastronomía</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root{
     --bg:#E8DBD3;
@@ -24,7 +24,7 @@
   body{margin:0;color:var(--ink);
     background:linear-gradient(180deg,var(--bg-top),var(--bg) 46%,var(--bg-bot));
     background-attachment:fixed;
-    font-family:"Inter","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+    font-family:"Jost","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased;overflow-x:hidden}
   img{max-width:100%;display:block}
   a{color:inherit;text-decoration:none}
   .wrap{width:100%;max-width:1780px;margin:0 auto;padding:0 var(--pad)}
@@ -84,16 +84,44 @@
   .sec-head.lead h2{font-size:clamp(36px,5.6vw,80px);line-height:1;letter-spacing:-.015em}
   .sec-head.lead p{font-size:clamp(17px,2vw,22px);margin-top:clamp(18px,2.4vw,30px);max-width:34ch}
   .sec-head.lead .eyebrow{margin-bottom:clamp(18px,2.4vw,28px)}
+  /* Texto de párrafos (manifiesto / secciones de texto) */
+  .prose{max-width:60ch;margin:clamp(8px,2vw,20px) 0 0}
+  .prose p{margin:0 0 20px;color:var(--soft);font-size:clamp(15px,1.7vw,18px);line-height:1.75}
+  .prose p:last-child{margin-bottom:0}
+  .text-sec .btn{margin-top:clamp(20px,2.6vw,30px)}
+  /* Secciones de texto más compactas (más cerca entre sí) */
+  .text-sec{padding-top:clamp(30px,4.5vw,58px);padding-bottom:clamp(30px,4.5vw,58px)}
+  .text-sec.right{text-align:right}
+  .text-sec.right .sec-head{max-width:none;margin-left:auto}
+  .text-sec.right .prose{margin-left:auto}
+  /* Texto + imagen al lado */
+  .split{display:grid;grid-template-columns:1fr 0.5fr;gap:clamp(30px,5vw,72px);align-items:center}
+  .split.right{grid-template-columns:0.5fr 1fr}
+  .split .media img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:clamp(16px,1.8vw,26px)}
+  .split .copy .sec-head{max-width:none;margin:0}
+  .split.right .copy{text-align:right}
+  .split.right .copy .prose{margin-left:auto}
+  @media(max-width:820px){
+    .split,.split.right{grid-template-columns:1fr;gap:clamp(18px,5vw,30px)}
+    .split .media{order:-1;max-width:420px}
+    .split.right .media{margin-left:auto}
+    .split.right .copy{text-align:left}
+    .split.right .copy .prose{margin-left:0}
+    .split .media img{aspect-ratio:3/2}
+  }
 
   /* Colección: grilla en filas, todas las fotos en 3:2 */
-  .board{display:grid;grid-template-columns:repeat(4,1fr);gap:0 clamp(12px,1.6vw,22px)}
+  .board{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,1.8vw,26px);align-items:start}
   .tile{break-inside:avoid;margin:0 0 clamp(12px,1.6vw,22px);position:relative;overflow:hidden;
     border-radius:clamp(16px,1.8vw,26px);display:block}
-  .tile img{width:100%;height:100%;object-fit:cover;transition:transform .8s cubic-bezier(.2,.7,.2,1)}
+  /* --z = zoom base del contenido (hace que la pieza se vea más grande dentro del mismo recuadro) */
+  .tile img{width:100%;height:100%;object-fit:cover;transform:scale(var(--z,1));transition:transform .8s cubic-bezier(.2,.7,.2,1)}
   /* Zoom suave al pasar el mouse; las piezas con galería se abren al hacer clic */
   @media(hover:hover) and (pointer:fine){
-    .tile:hover img{transform:scale(1.12)}
+    .tile:hover img{transform:scale(calc(var(--z,1) * 1.07))}
   }
+  /* .cut: la pieza se corta por un costado del recuadro (sensación de más grande) */
+  .tile.cut img{transform-origin:20% 50%}
   .tile.has-gal{cursor:pointer}
   .tile .more{position:absolute;right:12px;bottom:12px;z-index:2;font-size:10px;letter-spacing:.16em;text-transform:uppercase;
     padding:7px 11px;border-radius:999px;background:rgba(250,245,239,.82);color:var(--ink);backdrop-filter:blur(6px);
@@ -103,12 +131,14 @@
   .viewer{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;align-items:center;justify-content:center;
     padding:clamp(16px,4vw,48px);background:rgba(36,30,25,.94);opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
   .viewer.open{opacity:1;visibility:visible}
-  .v-stage{position:relative;width:min(1100px,100%);aspect-ratio:3/2;max-height:72vh}
-  .v-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;opacity:0;transition:opacity .45s ease}
-  .v-stage img.on{opacity:1}
-  .v-cap{margin-top:clamp(16px,2.4vw,26px);text-align:center;color:#F5EEE4}
-  .v-cap .pn{display:block;font-size:clamp(18px,2vw,22px);font-weight:300}
-  .v-cap .pk{display:block;margin-top:5px;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:#C9B7A6}
+  .v-stage{position:relative;width:min(1600px,97vw);aspect-ratio:3/2;max-height:92vh;border-radius:8px;overflow:hidden;
+    box-shadow:0 40px 90px -40px rgba(0,0,0,.6)}
+  .v-stage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+  .v-cap{position:absolute;left:0;right:0;bottom:0;z-index:2;text-align:center;color:#F7F1E8;
+    padding:clamp(40px,7vw,90px) clamp(18px,3vw,40px) clamp(18px,2.6vw,32px);
+    background:linear-gradient(0deg,rgba(18,12,8,.78),rgba(18,12,8,.2) 55%,rgba(18,12,8,0))}
+  .v-cap .pn{display:block;font-size:clamp(22px,2.4vw,30px);font-weight:300}
+  .v-cap .pk{display:block;margin-top:8px;font-size:clamp(11px,1.1vw,13px);letter-spacing:.18em;text-transform:uppercase;color:#E6D6C4}
   .v-dots{display:flex;gap:8px;justify-content:center;margin-top:16px}
   .v-dots button{width:8px;height:8px;padding:0;border:0;border-radius:50%;background:rgba(245,238,228,.35);cursor:pointer}
   .v-dots button.on{background:#F5EEE4}
@@ -118,10 +148,12 @@
   .v-prev{left:clamp(8px,2vw,28px)} .v-next{right:clamp(8px,2vw,28px)}
   .v-close{position:absolute;top:clamp(12px,2vw,24px);right:clamp(12px,2vw,24px);transform:none}
   @media(max-width:620px){ .v-prev,.v-next{display:none} }
-  .piece{break-inside:avoid;margin:0 0 clamp(18px,2.2vw,30px)}
+  .piece{margin:0}
   .piece .tile{margin:0}
   .piece .pn{display:block;margin:12px 2px 0;font-size:15px}
-  .piece .pk{display:block;margin:3px 2px 0;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--soft)}
+  .piece .pk{display:inline-grid;grid-template-columns:auto auto auto;column-gap:clamp(10px,1.1vw,18px);row-gap:5px;
+    margin:7px 2px 0;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--soft);
+    justify-items:center;align-items:baseline}
 
   /* Footer */
   .foot{display:flex;flex-direction:column;align-items:center;gap:10px;
@@ -174,20 +206,59 @@
   <div class="hero-scrim"></div>
   <div class="hero-inner" id="heroInner">
     <img class="hero-logo" src="assets/logo-cream.png" alt="TENTÁ Gres">
-    <p class="hero-tag">Cerámica para la mesa</p>
+    <p class="hero-tag">Cerámica para el hogar y la gastronomía</p>
   </div>
   <p class="hero-foot">Hecho a mano<span>·</span>A pedido</p>
 </section>
 
-<!-- MOODBOARD -->
-<section id="piezas">
+<!-- INTRO / MANIFIESTO -->
+<section id="intro" class="text-sec right" style="padding-top:clamp(66px,10vw,140px)">
   <div class="wrap">
-    <div class="sec-head lead reveal">
-      <p class="eyebrow">Colección actual</p>
-      <h2>Hacemos piezas<br>a pedido</h2>
-      <p>Cualquiera de estas, en el esmalte, la medida y la cantidad que quieras.</p>
+    <div class="sec-head reveal">
+      <p class="eyebrow">Tentá Gres</p>
+      <h2>Para quienes aman cocinar, servir y compartir.</h2>
+    </div>
+    <div class="prose reveal">
+      <p>Hacemos vajilla de gres pensada para la gastronomía: formas, colores y texturas que dialogan con la comida.</p>
+      <p>Cada pieza está hecha a mano, así que ninguna es igual a otra. Pequeñas variaciones que la vuelven única.</p>
+    </div>
+  </div>
+</section>
+
+<!-- COLECCIÓN / CATÁLOGO -->
+<section id="piezas" style="padding-top:clamp(30px,4.5vw,58px)">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">Piezas para la mesa</p>
+      <h2>Colección</h2>
+      <p>Platos, bowls, tazas y ensaladeras de gres, hechos a mano. Formas simples, esmaltes con matices y una colección pensada tanto para la gastronomía como para el uso cotidiano.</p>
     </div>
     <div class="board" id="board"></div>
+  </div>
+</section>
+
+<!-- VAJILLA PARA TU PROYECTO -->
+<section id="proyecto" class="text-sec right">
+  <div class="wrap">
+    <div class="sec-head reveal" style="max-width:640px;margin-left:auto">
+      <p class="eyebrow">Por encargo</p>
+      <h2>Vajilla para tu proyecto.</h2>
+      <p>Trabajamos por encargo para restaurantes, cafeterías y otros espacios gastronómicos. Ofrecemos distintas formas, tamaños y esmaltes, y evaluamos propuestas según la identidad de cada local.</p>
+    </div>
+  </div>
+</section>
+
+<!-- SOBRE EL GRES -->
+<section id="gres" class="text-sec">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="eyebrow">El material</p>
+      <h2>El gres</h2>
+    </div>
+    <div class="prose reveal">
+      <p>El gres es un material cerámico de alta temperatura, resistente y de baja porosidad, ideal para la elaboración de vajilla de uso cotidiano.</p>
+      <p>Su durabilidad y resistencia lo hacen adecuado tanto para el hogar como para el uso gastronómico.</p>
+    </div>
   </div>
 </section>
 
@@ -196,13 +267,12 @@
   <small>© 2026 TENTÁ Gres</small>
 </div>
 
-<div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Fotos de la pieza">
+<div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Foto de la pieza">
   <button class="v-btn v-close" aria-label="Cerrar">&times;</button>
-  <button class="v-btn v-prev" aria-label="Foto anterior">&#8249;</button>
-  <button class="v-btn v-next" aria-label="Foto siguiente">&#8250;</button>
-  <div class="v-stage" id="vStage"></div>
-  <div class="v-dots" id="vDots"></div>
-  <div class="v-cap"><span class="pn" id="vName"></span><span class="pk" id="vKind"></span></div>
+  <div class="v-stage" id="vStage">
+    <img id="vImg" alt="">
+    <div class="v-cap"><span class="pn" id="vName"></span><span class="pk" id="vKind"></span></div>
+  </div>
 </div>
 
 <a class="wa-float" data-wa="Hola Belén 👋 Quería hacerte un pedido.">
@@ -222,21 +292,26 @@
     "Plato Duna": ["assets/piezas/plato-duna-1.jpg","assets/piezas/plato-duna-2.jpg","assets/piezas/plato-duna-3.jpg"],
   };
   /* Orden: platos, bowls, ensaladeras, tazas */
+  /* [imagen, nombre, proporción, opciones]  ·  opción = [tamaño, medida, precio] */
+  const PLATO = [["Grande","24 cm","$26.000"],["Chico","19 cm","$18.000"]];
+  const ENSALADERA = [["Mediana","22 cm","$32.000"],["Grande","25 cm","$41.000"]];
+  const BOWL = [["Bowl","13 cm","$17.000"]];
+  /* Proporción por pieza (las fotos son 3:2). Ensaladeras en 3/2 para que NO se corten los lados. */
   const TILES = [
-    ["assets/p-plato-duna.jpg","Plato Duna","Plato de postre","1 / 1","Ø 20 cm"],
-    ["assets/p-plato-salvia.jpg","Plato Salvia","Plato playo","4 / 3","Ø 26 cm"],
-    ["assets/p-bowl-laguna.jpg","Bowl Laguna","Bowl","3 / 2","Ø 15 × 7 cm"],
-    ["assets/p-bowl-hueso.jpg","Bowl Hueso","Bowl","4 / 3","Ø 15 × 7 cm"],
-    ["assets/p-bowl-petroleo.jpg","Bowl Petróleo","Bowl","4 / 3","Ø 15 × 7 cm"],
-    ["assets/p-bowl-arena.jpg","Bowl Arena","Bowl chico","1 / 1","Ø 12 × 6 cm"],
-    ["assets/p-bowl-tostado.jpg","Bowl Tostado","Bowl","3 / 2","Ø 15 × 7 cm"],
-    ["assets/p-bowl-oliva.jpg","Ensaladera Oliva","Ensaladera","1 / 1","Ø 16 × 5 cm"],
-    ["assets/p-cuenco-barro.jpg","Ensaladera Barro","Ensaladera","3 / 2","Ø 14 × 7 cm"],
-    ["assets/p-fuente-salvia.jpg","Ensaladera Salvia","Ensaladera","3 / 2","Ø 30 cm"],
-    ["assets/p-fuente-oceano.jpg","Ensaladera Océano","Ensaladera","3 / 2","Ø 28 × 6 cm"],
-    ["assets/p-fuente-arena.jpg","Ensaladera Arena","Ensaladera","3 / 2","Ø 30 × 4 cm"],
-    ["assets/p-vaso-avena.jpg","Taza Avena","Taza","4 / 3","Ø 8 × 10 cm"],
-    ["assets/p-vaso-tierra.jpg","Taza Tierra","Taza","4 / 3","Ø 8 × 10 cm"],
+    ["assets/p-plato-duna.jpg","Plato Duna","3 / 2",PLATO],
+    ["assets/p-plato-salvia.jpg","Plato Salvia","3 / 2",PLATO],
+    ["assets/p-bowl-laguna.jpg","Bowl Laguna","3 / 2",BOWL],
+    ["assets/p-bowl-hueso.jpg","Bowl Hueso","3 / 2",BOWL],
+    ["assets/p-bowl-petroleo.jpg","Bowl Petróleo","3 / 2",BOWL],
+    ["assets/p-bowl-arena.jpg","Bowl Arena","3 / 2",BOWL],
+    ["assets/p-bowl-tostado.jpg","Bowl Tostado","3 / 2",BOWL],
+    ["assets/p-bowl-oliva.jpg","Ensaladera Oliva","3 / 2",ENSALADERA],
+    ["assets/p-cuenco-barro.jpg","Ensaladera Barro","3 / 2",[["Individual","18 cm","$26.000"]]],
+    ["assets/p-fuente-salvia.jpg","Ensaladera Salvia","3 / 2",ENSALADERA],
+    ["assets/p-fuente-oceano.jpg","Ensaladera Océano","3 / 2",ENSALADERA],
+    ["assets/p-fuente-arena.jpg","Ensaladera Arena","3 / 2",[["XL","29 cm","$53.000"]]],
+    ["assets/p-vaso-avena.jpg","Taza Avena","3 / 2",[["Tacita","8 cm","$13.000"]]],
+    ["assets/p-vaso-tierra.jpg","Taza Tierra","3 / 2",[["Tacita","7 cm",""]]],
   ];
 
   /* Portada: cada columna rota entre 3 fotos con crossfade; la derecha va desfasada
@@ -265,58 +340,41 @@
   const waLink = msg => "https://wa.me/"+WHATSAPP_NUMBER+"?text="+encodeURIComponent(msg);
 
   /* Moodboard */
-  document.getElementById("board").innerHTML = TILES.map(([img,name,kind,ar,size],i)=>`
+  document.getElementById("board").innerHTML = TILES.map(([img,name,ar,options],i)=>{
+    const cells = options.map(([label,size,price]) => `<span>${label}</span><span>${size}</span><span>${price||''}</span>`).join('');
+    const infoText = options.map(([label,size,price]) => `${label} · ${size}${price ? ' · ' + price : ''}`).join('  /  ');
+    /* zoom del contenido según el tamaño real de la pieza (mismo recuadro, pieza más grande/chica) */
+    let z = 1, tileCls = '';                     // tacitas (7–8 cm)
+    if(options===BOWL) z = 1.07;                 // bowls 13 cm
+    else if(options===PLATO) z = 1.14;           // platos 19–24 cm
+    else if(name==='Ensaladera Barro') z = 1.14; // individual 18 cm
+    else if(options===ENSALADERA) z = 1.24;      // medianas/grandes 22–25 cm
+    else if(name==='Ensaladera Arena'){ z = 1.45; tileCls = ' cut'; } // XL 29 cm: corta por un lado
+    return `
     <div class="piece reveal" style="transition-delay:${(i%4)*70}ms">
-      <div class="tile has-gal" data-name="${name}" data-kind="${kind} · ${size}" data-img="${img}">
-        <img src="${img}" alt="${name}" style="aspect-ratio:3 / 2" loading="lazy">
-        <span class="more">Ver fotos</span>
+      <div class="tile has-gal${tileCls}" style="aspect-ratio:${ar};--z:${z}" data-name="${name}" data-kind="${infoText}" data-img="${img}">
+        <img src="${img}" alt="${name}" loading="lazy">
       </div>
-      <span class="pn">${name}</span><span class="pk">${kind} · ${size}</span>
-    </div>`).join("");
+      <span class="pn">${name}</span><span class="pk">${cells}</span>
+    </div>`;}).join("");
 
-  /* Visor: fotos de la pieza con flechas, puntos, teclado y deslizar en el celular */
-  const viewer = document.getElementById("viewer"), vStage = document.getElementById("vStage"), vDots = document.getElementById("vDots");
-  let vImgs = [], vK = 0;
-  const vShow = k => {
-    vK = (k + vImgs.length) % vImgs.length;
-    vImgs.forEach((im,i)=>im.classList.toggle("on", i===vK));
-    [...vDots.children].forEach((d,i)=>d.classList.toggle("on", i===vK));
-  };
+  /* Visor: una sola foto grande full-frame + nombre, tamaño y precio */
+  const viewer = document.getElementById("viewer"), vImg = document.getElementById("vImg");
   const vOpen = tile => {
-    const list = GALLERIES[tile.dataset.name] || Array(3).fill(tile.dataset.img);
-    vStage.innerHTML = list.map(src=>`<img src="${src}" alt="${tile.dataset.name}">`).join("");
-    vDots.innerHTML = list.map((_,i)=>`<button aria-label="Foto ${i+1}"></button>`).join("");
-    vImgs = [...vStage.children];
-    [...vDots.children].forEach((d,i)=>d.onclick = ()=>vShow(i));
+    vImg.src = tile.dataset.img; vImg.alt = tile.dataset.name;
     document.getElementById("vName").textContent = tile.dataset.name;
     document.getElementById("vKind").textContent = tile.dataset.kind;
-    vShow(0);
     viewer.classList.add("open");
     document.body.style.overflow = "hidden";
   };
   const vClose = () => { viewer.classList.remove("open"); document.body.style.overflow = ""; };
   document.querySelectorAll(".tile.has-gal").forEach(t=>t.addEventListener("click",()=>vOpen(t)));
-  viewer.querySelector(".v-prev").onclick = ()=>vShow(vK-1);
-  viewer.querySelector(".v-next").onclick = ()=>vShow(vK+1);
   viewer.querySelector(".v-close").onclick = vClose;
   viewer.addEventListener("click",e=>{ if(e.target===viewer) vClose(); });
-  document.addEventListener("keydown",e=>{
-    if(!viewer.classList.contains("open")) return;
-    if(e.key==="Escape") vClose();
-    if(e.key==="ArrowLeft") vShow(vK-1);
-    if(e.key==="ArrowRight") vShow(vK+1);
-  });
-  let tx = null;
-  vStage.addEventListener("touchstart",e=>{ tx = e.touches[0].clientX; },{passive:true});
-  vStage.addEventListener("touchend",e=>{
-    if(tx===null) return;
-    const dx = e.changedTouches[0].clientX - tx;
-    if(Math.abs(dx) > 40) vShow(vK + (dx < 0 ? 1 : -1));
-    tx = null;
-  });
+  document.addEventListener("keydown",e=>{ if(viewer.classList.contains("open") && e.key==="Escape") vClose(); });
 
-  /* Zoom: el punto bajo el cursor queda como centro de la ampliación */
-  document.querySelectorAll(".tile").forEach(tile=>{
+  /* Zoom: el punto bajo el cursor queda como centro de la ampliación (salvo las .cut) */
+  document.querySelectorAll(".tile:not(.cut)").forEach(tile=>{
     const img = tile.querySelector("img");
     tile.addEventListener("mousemove",e=>{
       const r = tile.getBoundingClientRect();
@@ -360,6 +418,7 @@
     entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add("in"); io.unobserve(e.target); } });
   },{threshold:.08,rootMargin:"0px 0px -12% 0px"});
   document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+
 </script>
 </body>
 </html>
