@@ -206,7 +206,7 @@
   <div class="hero-scrim"></div>
   <div class="hero-inner" id="heroInner">
     <img class="hero-logo" src="assets/logo-cream.png" alt="TENTÁ Gres">
-    <p class="hero-tag">Cerámica para el hogar y la gastronomía</p>
+    <p class="hero-tag">Cerámica para el hogar y gastronómicos</p>
   </div>
   <p class="hero-foot">Hecho a mano<span>·</span>A pedido</p>
 </section>
@@ -219,7 +219,7 @@
       <h2>Para quienes aman cocinar, servir y compartir.</h2>
     </div>
     <div class="prose reveal">
-      <p>Hacemos vajilla de gres pensada para la gastronomía: formas, colores y texturas que dialogan con la comida.</p>
+      <p>Hacemos vajilla de gres pensada para la gastronomía: formas, colores y texturas que se relacionan con la comida.</p>
       <p>Cada pieza está hecha a mano, así que ninguna es igual a otra. Pequeñas variaciones que la vuelven única.</p>
     </div>
   </div>
@@ -243,7 +243,7 @@
     <div class="sec-head reveal" style="max-width:640px;margin-left:auto">
       <p class="eyebrow">Por encargo</p>
       <h2>Vajilla para tu proyecto.</h2>
-      <p>Trabajamos por encargo para restaurantes, cafeterías y otros espacios gastronómicos. Ofrecemos distintas formas, tamaños y esmaltes, y evaluamos propuestas según la identidad de cada local.</p>
+      <p>Trabajamos por encargo para restaurantes, cafeterías y otros espacios gastronómicos. Ofrecemos distintas formas, tamaños y esmaltes y evaluamos propuestas según la identidad de cada local.</p>
     </div>
   </div>
 </section>
@@ -252,8 +252,8 @@
 <section id="gres" class="text-sec">
   <div class="wrap">
     <div class="sec-head reveal">
-      <p class="eyebrow">El material</p>
-      <h2>El gres</h2>
+      <p class="eyebrow">Material</p>
+      <h2>Gres</h2>
     </div>
     <div class="prose reveal">
       <p>El gres es un material cerámico de alta temperatura, resistente y de baja porosidad, ideal para la elaboración de vajilla de uso cotidiano.</p>
@@ -293,26 +293,26 @@
   };
   /* Orden: platos, bowls, ensaladeras, tazas */
   /* [imagen, nombre, proporción, opciones]  ·  opción = [tamaño, medida, precio] */
-  const PLATO = [["Grande","24 cm","$26.000"],["Chico","19 cm","$18.000"]];
-  const ENSALADERA = [["Mediana","22 cm","$32.000"],["Grande","25 cm","$41.000"]];
-  const BOWL = [["Bowl","13 cm","$17.000"]];
+  const PLATO = [["Grande","24 cm","$36.000"],["Chico","19 cm","$25.000"]];
+  /* Ensaladeras: solo medida y precio (sin "chica/grande") */
+  const ENSALADERA = [["","22 cm","$43.000"]];
+  const BOWL = [["Bowl","13 cm","$24.000"]];
   /* Proporción por pieza (las fotos son 3:2). Ensaladeras en 3/2 para que NO se corten los lados. */
   const TILES = [
     ["assets/p-plato-duna.jpg","Plato Duna","3 / 2",PLATO],
     ["assets/p-plato-salvia.jpg","Plato Salvia","3 / 2",PLATO],
     ["assets/p-bowl-laguna.jpg","Bowl Laguna","3 / 2",BOWL],
-    ["assets/p-bowl-hueso.jpg","Bowl Hueso","3 / 2",BOWL],
-    ["assets/p-bowl-petroleo.jpg","Bowl Petróleo","3 / 2",BOWL],
+    ["assets/p-bowl-hueso.jpg","Bowl Avena","3 / 2",BOWL],
     ["assets/p-bowl-arena.jpg","Bowl Arena","3 / 2",BOWL],
     ["assets/p-bowl-tostado.jpg","Bowl Tostado","3 / 2",BOWL],
     ["assets/p-bowl-orilla.jpg","Bowl Orilla","3 / 2",BOWL],
     ["assets/p-bowl-oliva.jpg","Ensaladera Oliva","3 / 2",ENSALADERA],
-    ["assets/p-cuenco-barro.jpg","Ensaladera Barro","3 / 2",[["Individual","18 cm","$26.000"]]],
+    ["assets/p-cuenco-barro.jpg","Ensaladera Barro","3 / 2",[["","29 cm","$65.000"]]],
     ["assets/p-fuente-salvia.jpg","Ensaladera Salvia","3 / 2",ENSALADERA],
-    ["assets/p-fuente-oceano.jpg","Ensaladera Océano","3 / 2",ENSALADERA],
-    ["assets/p-fuente-arena.jpg","Ensaladera Arena","3 / 2",[["XL","29 cm","$53.000"]]],
-    ["assets/p-vaso-avena.jpg","Taza Avena","3 / 2",[["Tacita","8 cm","$13.000"]]],
-    ["assets/p-vaso-tierra.jpg","Taza Tierra","3 / 2",[["Tacita","7 cm",""]]],
+    ["assets/p-fuente-oceano.jpg","Ensaladera Laguna","3 / 2",ENSALADERA],
+    ["assets/p-fuente-arena.jpg","Ensaladera Arena","3 / 2",[["","25 cm","$50.000"]]],
+    ["assets/p-vaso-avena.jpg","Taza Avena","3 / 2",[["Tacita","8 cm","$18.000"]]],
+    ["assets/p-vaso-tierra.jpg","Taza Tierra","3 / 2",[["Tacita","7 cm","$15.000"]]],
   ];
 
   /* Portada: cada columna rota entre 3 fotos con crossfade; la derecha va desfasada
@@ -323,10 +323,9 @@
      Plato Salvia, Plato Piedra, Bowl Arena) van solo en su versión con comida */
   const HERO = {
     hstackA: [[F("latte"),"50%"],[P("bowl-oliva"),"50%"],[F("carne"),"50%"],[P("bowl-laguna"),"40%"],
-              [P("plato-duna"),"50%"],[F("peras"),"50%"],[P("fuente-oceano"),"50%"],[P("vaso-avena"),"40%"],
-              [F("tarta"),"50%"]],
+              [P("plato-duna"),"50%"],[P("fuente-oceano"),"50%"],[P("vaso-avena"),"40%"]],
     hstackB: [[F("tostadas"),"60%"],[P("bowl-tostado"),"10%"],[F("ravioles"),"50%"],[P("fuente-salvia"),"50%"],
-              [P("bowl-petroleo"),"50%"],[P("fuente-arena"),"50%"],[P("bowl-hueso"),"35%"]],
+              [P("fuente-arena"),"50%"],[P("bowl-hueso"),"35%"]],
   };
   const HERO_STEP = 3200; /* ms que queda cada foto */
   Object.entries(HERO).forEach(([id,list],col)=>{
@@ -342,15 +341,16 @@
 
   /* Moodboard */
   document.getElementById("board").innerHTML = TILES.map(([img,name,ar,options],i)=>{
-    const cells = options.map(([label,size,price]) => `<span>${label}</span><span>${size}</span><span>${price||''}</span>`).join('');
-    const infoText = options.map(([label,size,price]) => `${label} · ${size}${price ? ' · ' + price : ''}`).join('  /  ');
+    const cells = options.map(([label,size,price]) => label
+      ? `<span>${label}</span><span>${size}</span><span>${price||''}</span>`
+      : `<span>${size}</span><span>${price||''}</span><span></span>`).join('');
+    const infoText = options.map(o => o.filter(Boolean).join(' · ')).join('  /  ');
     /* zoom del contenido según el tamaño real de la pieza (mismo recuadro, pieza más grande/chica) */
     let z = 1, tileCls = '';                     // tacitas (7–8 cm)
     if(options===BOWL) z = 1.07;                 // bowls 13 cm
     else if(options===PLATO) z = 1.14;           // platos 19–24 cm
-    else if(name==='Ensaladera Barro') z = 1.14; // individual 18 cm
-    else if(options===ENSALADERA) z = 1.24;      // medianas/grandes 22–25 cm
-    else if(name==='Ensaladera Arena'){ z = 1.45; tileCls = ' cut'; } // XL 29 cm: corta por un lado
+    else if(options===ENSALADERA || name==='Ensaladera Arena') z = 1.24; // 22–25 cm
+    else if(name==='Ensaladera Barro'){ z = 1.45; tileCls = ' cut'; }    // 29 cm: corta por un lado
     return `
     <div class="piece reveal" style="transition-delay:${(i%4)*70}ms">
       <div class="tile has-gal${tileCls}" style="aspect-ratio:${ar};--z:${z}" data-name="${name}" data-kind="${infoText}" data-img="${img}">
