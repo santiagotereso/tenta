@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Simulador grestenta</title>
+<style>
+  :root{
+    --bg:#000; --fg:#f5f5f5; --muted:#a8a8a8; --line:#262626; --btn:#363636; --link:#e0f1ff;
+    --page:#1a1a1a; --heart:#ff3040; --sel:#f5f5f5;
+  }
+  :root[data-theme="light"]{
+    --bg:#fff; --fg:#000; --muted:#737373; --line:#dbdbdb; --btn:#efefef; --link:#00376b;
+    --page:#e9e6e1; --sel:#000;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;height:100%}
+  body{background:var(--page);font:14px/18px -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--fg);
+    display:flex;align-items:center;justify-content:center;gap:28px}
+  svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;display:block}
+
+  /* Teléfono */
+  .phone{width:390px;height:844px;max-height:calc(100vh - 32px);background:var(--bg);border-radius:46px;overflow:hidden;position:relative;
+    box-shadow:0 0 0 10px #111,0 0 0 11px #333,0 30px 80px rgba(0,0,0,.45);display:flex;flex-direction:column}
+  @media (max-width:500px){
+    body{display:block;background:var(--bg)}
+    .phone{width:100%;height:100dvh;max-height:none;border-radius:0;box-shadow:none}
+    .side{display:none}
+  }
+  .status{height:47px;flex:none;display:flex;align-items:flex-end;justify-content:space-between;padding:0 28px 6px 34px;font-weight:600;font-size:15px}
+  .status .r{display:flex;gap:6px;align-items:center}
+  .bars{display:flex;gap:2px;align-items:flex-end}.bars i{width:3px;background:var(--fg);border-radius:1px}
+  .batt{width:25px;height:12px;border:1.5px solid var(--muted);border-radius:4px;padding:1px}.batt i{display:block;height:100%;width:80%;background:var(--fg);border-radius:1.5px}
+
+  .view{flex:1;position:relative;overflow-y:auto;overflow-x:hidden;scrollbar-width:none}
+  .view::-webkit-scrollbar{display:none}
+  .hidden{display:none!important}
+
+  /* Barra superior perfil */
+  .topbar{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 14px;position:sticky;top:0;background:var(--bg);z-index:5}
+  .topbar .user{display:flex;align-items:center;gap:4px;font-size:20px;font-weight:700;letter-spacing:-.2px}
+  .topbar .user svg{width:16px;height:16px;stroke-width:2.6}
+  .topbar .icons{display:flex;gap:22px}
+  .dot{width:7px;height:7px;background:var(--heart);border-radius:50%;margin-left:3px}
+
+  /* Cabecera de perfil */
+  .head{display:flex;align-items:center;padding:6px 16px 0;gap:22px}
+  .avatar{width:86px;height:86px;border-radius:50%;flex:none;object-fit:cover;border:1px solid var(--line)}
+  .stats{flex:1;display:flex;justify-content:space-around;text-align:center}
+  .stats b{display:block;font-size:17px;line-height:22px}
+  .stats span{font-size:13px}
+  .bio{padding:12px 16px 0;font-size:14px;line-height:19px}
+  .bio .name{font-weight:600}
+  .bio .cat{color:var(--muted)}
+  .bio a{color:var(--link);font-weight:600;text-decoration:none;display:inline-flex;align-items:center;gap:4px}
+  .bio a svg{width:14px;height:14px;stroke-width:2.2;transform:rotate(-45deg)}
+  .btns{display:flex;gap:6px;padding:14px 16px 0}
+  .btns button{flex:1;height:32px;border:0;border-radius:8px;background:var(--btn);color:var(--fg);font:600 14px/1 inherit;font-family:inherit;cursor:pointer}
+  .btns button.sq{flex:none;width:34px;display:flex;align-items:center;justify-content:center}
+  .btns button.sq svg{width:16px;height:16px}
+
+  /* Destacadas */
+  .hl{display:flex;gap:16px;padding:16px 16px 6px;overflow-x:auto;scrollbar-width:none}
+  .hl::-webkit-scrollbar{display:none}
+  .hl div{text-align:center;font-size:12px;flex:none;width:66px}
+  .hl img{width:64px;height:64px;border-radius:50%;object-fit:cover;border:2px solid var(--bg);box-shadow:0 0 0 1px var(--line);display:block;margin:0 auto 5px}
+  .hl .new span{width:64px;height:64px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;margin:0 auto 5px}
+
+  /* Pestañas */
+  .tabs{display:flex;position:sticky;top:44px;background:var(--bg);z-index:4;margin-top:8px}
+  .tabs div{flex:1;height:44px;display:flex;align-items:center;justify-content:center;color:var(--muted);border-bottom:1px solid transparent}
+  .tabs div.on{color:var(--sel);border-bottom-color:var(--sel)}
+
+  /* Grilla 3:4 como Instagram */
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+  .grid button{padding:0;border:0;background:#222;aspect-ratio:3/4;overflow:hidden;cursor:pointer;position:relative}
+  .grid img{width:100%;height:100%;object-fit:cover;display:block}
+  .grid button:active img{opacity:.75}
+
+  /* Feed de publicaciones */
+  .ptop{height:44px;display:flex;align-items:center;padding:0 10px;gap:8px;position:sticky;top:0;background:var(--bg);z-index:5}
+  .ptop button{background:none;border:0;color:var(--fg);padding:4px;cursor:pointer}
+  .ptop .t{flex:1;text-align:center;margin-right:36px}
+  .ptop .t small{display:block;color:var(--muted);font-size:12px;line-height:14px;font-weight:600;text-transform:uppercase}
+  .ptop .t b{font-size:16px}
+  .post{padding-bottom:14px}
+  .phead{height:56px;display:flex;align-items:center;padding:0 12px;gap:10px}
+  .phead img{width:32px;height:32px;border-radius:50%;object-fit:cover;border:1px solid var(--line)}
+  .phead b{flex:1;font-size:14px}
+  .pimg{position:relative;aspect-ratio:4/5;background:#111;user-select:none}
+  .pimg img{width:100%;height:100%;object-fit:cover;display:block;-webkit-user-drag:none}
+  .pimg .big{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+  .pimg .big svg{width:96px;height:96px;fill:#fff;stroke:#fff;opacity:0;transform:scale(.3);filter:drop-shadow(0 4px 20px rgba(0,0,0,.35))}
+  .pimg .big.pop svg{animation:pop .9s ease forwards}
+  @keyframes pop{0%{opacity:0;transform:scale(.3)}15%{opacity:1;transform:scale(1.15)}30%{transform:scale(.95)}45%{transform:scale(1)}80%{opacity:1}100%{opacity:0;transform:scale(1)}}
+  .acts{display:flex;align-items:center;padding:10px 12px 6px;gap:16px}
+  .acts button{background:none;border:0;color:var(--fg);padding:0;cursor:pointer;display:flex;align-items:center;gap:6px;font:600 14px inherit;font-family:inherit}
+  .acts .sp{flex:1}
+  .acts .like.on svg{fill:var(--heart);stroke:var(--heart);animation:bump .35s ease}
+  .acts .save.on svg{fill:currentColor}
+  @keyframes bump{50%{transform:scale(1.25)}}
+  .cap{padding:2px 12px 0;white-space:pre-line;line-height:19px}
+  .cap b{margin-right:4px}
+  .cap .more{color:var(--muted);cursor:pointer}
+  .meta{padding:6px 12px 0;color:var(--muted);font-size:13px}
+  .date{padding:4px 12px 0;color:var(--muted);font-size:12px}
+
+  /* Barra inferior */
+  .nav{height:52px;flex:none;display:flex;justify-content:space-around;align-items:center;border-top:1px solid var(--line);padding-bottom:4px;background:var(--bg)}
+  .nav svg{width:26px;height:26px}
+  .nav img{width:28px;height:28px;border-radius:50%;object-fit:cover;outline:1.5px solid var(--fg);outline-offset:1px}
+  .home-ind{height:22px;flex:none;display:flex;justify-content:center;align-items:center;background:var(--bg)}
+  .home-ind i{width:134px;height:5px;border-radius:3px;background:var(--fg)}
+
+  /* Panel lateral */
+  .side{max-width:260px;color:#333;font-size:14px;line-height:1.5}
+  :root:not([data-theme="light"]) .side{color:#ddd}
+  .side h1{font-size:20px;margin:0 0 8px}
+  .side p{margin:0 0 12px}
+  .side button{border:1px solid currentColor;background:none;color:inherit;border-radius:999px;padding:7px 14px;font:inherit;cursor:pointer}
+</style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="status">
+    <span id="clock">9:41</span>
+    <span class="r"><span class="bars"><i style="height:4px"></i><i style="height:6px"></i><i style="height:8px"></i><i style="height:10px"></i></span><span style="font-size:13px">5G</span><span class="batt"><i></i></span></span>
+  </div>
+
+  <!-- PERFIL -->
+  <div class="view" id="profile">
+    <div class="topbar">
+      <span><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg></span>
+      <span class="user">grestenta <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg><span class="dot"></span></span>
+      <span class="icons"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/></svg><svg viewBox="0 0 24 24"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg></span>
+    </div>
+
+    <div class="head">
+      <img class="avatar" src="avatar.jpg" alt="">
+      <div class="stats">
+        <div><b id="nPosts">15</b><span>publicaciones</span></div>
+        <div><b>1.248</b><span>seguidores</span></div>
+        <div><b>312</b><span>seguidos</span></div>
+      </div>
+    </div>
+
+    <div class="bio">
+      <div class="name">Tentá Gres</div>
+      <div class="cat">Artesanía</div>
+      Vajilla de gres hecha a mano<br>
+      Para el hogar y la gastronomía<br>
+      Pedidos y encargos por WhatsApp 👇<br>
+      <a href="https://wa.me/5491162327963?text=Hola+Belen+te+escribo+desde+Instagram" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>WhatsApp y 1 más</a>
+    </div>
+
+    <div class="btns">
+      <button>Editar perfil</button><button>Compartir perfil</button>
+      <button class="sq"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M2 21v-1a6 6 0 0 1 12 0v1"/><path d="M19 8v6"/><path d="M16 11h6"/></svg></button>
+    </div>
+
+    <div class="hl">
+      <div><img src="04_platos_salvia.jpg" alt="">Platos</div>
+      <div><img src="12_laguna.jpg" alt="">Bowls</div>
+      <div><img src="08_vasos_avena.jpg" alt="">Tazas</div>
+      <div><img src="09_barro.jpg" alt="">Ensaladeras</div>
+      <div><img src="06_belen.jpg" alt="">Taller</div>
+      <div class="new"><span><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg></span>Nueva</div>
+    </div>
+
+    <div class="tabs">
+      <div class="on"><svg viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg></div>
+      <div><svg viewBox="0 0 24 24"><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3Z"/><path d="m6.2 5.3 3.1 3.9"/><path d="m12.4 3.4 3.1 4"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg></div>
+      <div><svg viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><circle cx="12" cy="10" r="3"/><path d="M7 21v-2a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2"/></svg></div>
+    </div>
+
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <!-- PUBLICACIONES -->
+  <div class="view hidden" id="feed">
+    <div class="ptop">
+      <button id="back" aria-label="Volver"><svg viewBox="0 0 24 24" style="width:28px;height:28px"><path d="m15 18-6-6 6-6"/></svg></button>
+      <div class="t"><small>grestenta</small><b>Publicaciones</b></div>
+    </div>
+    <div id="posts"></div>
+  </div>
+
+  <div class="nav">
+    <svg viewBox="0 0 24 24" id="navHome"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <svg viewBox="0 0 24 24"><rect width="18" height="18" x="3" y="3" rx="2"/><path d="M8 12h8"/><path d="M12 8v8"/></svg>
+    <svg viewBox="0 0 24 24"><path d="M20.2 6 3 11l-.9-2.4c-.3-1.1.3-2.2 1.3-2.5l13.5-4c1.1-.3 2.2.3 2.5 1.3Z"/><path d="m6.2 5.3 3.1 3.9"/><path d="m12.4 3.4 3.1 4"/><path d="M3 11h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2Z"/></svg>
+    <img src="avatar.jpg" alt="" id="navMe">
+  </div>
+  <div class="home-ind"><i></i></div>
+</div>
+
+<div class="side">
+  <h1>Simulador @grestenta</h1><p><b>Versión solo vajilla.</b> <a href="../" style="color:inherit">Ver la versión con comida</a></p>
+  <p>Tocá cualquier foto de la grilla para abrir la publicación, igual que en Instagram. Doble clic en la foto le da “me gusta”.</p>
+  <p>Seguidores y “me gusta” son números de ejemplo.</p>
+  <button id="theme">Cambiar a modo claro</button>
+</div>
+
+<script>
+  /* Orden de subida: 01 primero ... 15 último. En el perfil se ve al revés (15 arriba a la izquierda). */
+  const POSTS = [
+    ["01_logo.jpg","Tentá Gres. Vajilla de gres hecha a mano en Buenos Aires.\nPedidos por WhatsApp, el link está en la bio."],
+    ["02_gres.jpg","El gres es un material cerámico de alta temperatura, resistente y de baja porosidad. Ideal para el uso de todos los días."],
+    ["03_ensaladera_oliva.jpg","Ensaladera Oliva. Cada esmalte se mueve distinto en el horno, por eso no hay dos piezas iguales."],
+    ["04_platos_salvia.jpg","Plato Salvia. Un verde suave que acompaña cualquier comida."],
+    ["05_tostado.jpg","Bowl Tostado. Tonos cálidos y bordes con carácter."],
+    ["06_belen.jpg","Hecho a mano, pieza por pieza, en nuestro taller."],
+    ["07_usos.jpg","Vajilla para restaurantes, cafés y para tu casa. Trabajamos por encargo: escribinos y armamos la propuesta según la identidad de tu local."],
+    ["08_vasos_avena.jpg","Tazas Avena, para el café de todos los días."],
+    ["09_barro.jpg","Ensaladera Barro. Formas amplias para compartir."],
+    ["10_avena_detalle.jpg","Puntitos, texturas y matices: así se ve el gres de cerca."],
+    ["11_vajilla.jpg","Vajilla de gres hecha a mano, para el hogar y la gastronomía."],
+    ["12_laguna.jpg","Bowls Laguna. Un azul que cambia con la luz."],
+    ["13_orilla.jpg","Bowl Orilla. Cada borde es único."],
+    ["14_tierra.jpg","Tazas Tierra. Barro oscuro por fuera y un toque de color por dentro."],
+    ["15_platos_cenital.jpg","Formas simples para que la comida sea protagonista."],
+  ];
+  const TAGS = "#gres #ceramica #vajilla #hechoamano #grestenta";
+  const shown = POSTS.map((p,i)=>({img:p[0],cap:p[1],n:i+1})).reverse(); // más nuevo primero
+  const $ = s => document.querySelector(s);
+  const I = {
+    heart:'<svg viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>',
+    comment:'<svg viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></svg>',
+    send:'<svg viewBox="0 0 24 24"><path d="M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"/><path d="m21.854 2.147-10.94 10.939"/></svg>',
+    save:'<svg viewBox="0 0 24 24"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/></svg>',
+    dots:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>',
+  };
+  // números de ejemplo estables por publicación
+  const likesOf = n => 40 + ((n*37)%90);
+  const commentsOf = n => 1 + ((n*7)%9);
+  const DAYS = ["hace 1 día","hace 2 días","hace 3 días","hace 4 días","hace 5 días","hace 6 días","hace 1 semana"];
+  const fmt = n => n.toLocaleString("es-AR");
+
+  $("#grid").innerHTML = shown.map((p,i)=>`<button data-i="${i}"><img src="${p.img}" alt="" loading="lazy"></button>`).join("");
+
+  $("#posts").innerHTML = shown.map((p,i)=>{
+    const capFull = `${p.cap}\n\n${TAGS}`;
+    const short = p.cap.split("\n")[0];
+    const needsMore = capFull.length > short.length + 2 && short.length > 0;
+    return `<article class="post" id="post${i}">
+      <div class="phead"><img src="avatar.jpg" alt=""><b>grestenta</b>${I.dots}</div>
+      <div class="pimg" data-i="${i}"><img src="${p.img}" alt=""><div class="big">${I.heart}</div></div>
+      <div class="acts">
+        <button class="like" data-i="${i}">${I.heart}<span>${fmt(likesOf(p.n))}</span></button>
+        <button>${I.comment}<span>${commentsOf(p.n)}</span></button>
+        <button>${I.send}</button><span class="sp"></span>
+        <button class="save">${I.save}</button>
+      </div>
+      <div class="cap" data-full="${encodeURIComponent(capFull)}"><b>grestenta</b>${short}${needsMore?' <span class="more">... más</span>':''}</div>
+      <div class="meta">Ver los ${commentsOf(p.n)} comentarios</div>
+      <div class="date">${DAYS[Math.min(i,DAYS.length-1)]}</div>
+    </article>`;
+  }).join("");
+
+  const profile=$("#profile"), feed=$("#feed");
+  let gridScroll=0;
+  function openPost(i){
+    gridScroll=profile.scrollTop;
+    profile.classList.add("hidden"); feed.classList.remove("hidden");
+    const el=document.getElementById("post"+i);
+    feed.scrollTop = el.offsetTop - 44;
+  }
+  function closeFeed(){
+    feed.classList.add("hidden"); profile.classList.remove("hidden");
+    profile.scrollTop=gridScroll;
+  }
+  $("#grid").addEventListener("click",e=>{ const b=e.target.closest("button"); if(b) openPost(+b.dataset.i); });
+  $("#back").onclick=closeFeed;
+  $("#navMe").onclick=$("#navHome").onclick=()=>{ if(!feed.classList.contains("hidden")) closeFeed(); profile.scrollTo({top:0,behavior:"smooth"}); };
+
+  function setLike(i,on){
+    const b=document.querySelector(`.like[data-i="${i}"]`), n=likesOf(shown[i].n);
+    b.classList.toggle("on",on); b.querySelector("span").textContent=fmt(on?n+1:n);
+  }
+  feed.addEventListener("click",e=>{
+    const like=e.target.closest(".like"); if(like){ setLike(+like.dataset.i,!like.classList.contains("on")); return; }
+    const save=e.target.closest(".save"); if(save){ save.classList.toggle("on"); return; }
+    const more=e.target.closest(".more"); if(more){ const c=more.parentElement;
+      c.innerHTML=`<b>grestenta</b>${decodeURIComponent(c.dataset.full)}`; return; }
+  });
+  feed.addEventListener("dblclick",e=>{
+    const pi=e.target.closest(".pimg"); if(!pi) return;
+    const big=pi.querySelector(".big"); big.classList.remove("pop"); void big.offsetWidth; big.classList.add("pop");
+    setLike(+pi.dataset.i,true);
+  });
+  // doble toque en celular
+  let lastTap=0;
+  feed.addEventListener("touchend",e=>{
+    const pi=e.target.closest(".pimg"); if(!pi) return;
+    const now=Date.now(); if(now-lastTap<300){ e.preventDefault(); pi.dispatchEvent(new MouseEvent("dblclick",{bubbles:true})); } lastTap=now;
+  });
+
+  // abrir directo una publicación con #post3, etc.
+  const m=location.hash.match(/^#post(\d+)$/); if(m) addEventListener("load",()=>openPost(+m[1]));
+
+  // hora real
+  const tick=()=>{ const d=new Date(); $("#clock").textContent=d.getHours()+":"+String(d.getMinutes()).padStart(2,"0"); };
+  tick(); setInterval(tick,30000);
+
+  // tema
+  const root=document.documentElement;
+  $("#theme").onclick=()=>{
+    const light=root.dataset.theme!=="light";
+    root.dataset.theme=light?"light":"dark";
+    $("#theme").textContent=light?"Cambiar a modo oscuro":"Cambiar a modo claro";
+  };
+</script>
+</body>
+</html>
