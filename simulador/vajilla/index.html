@@ -119,6 +119,16 @@
   .side h1{font-size:20px;margin:0 0 8px}
   .side p{margin:0 0 12px}
   .side button{border:1px solid currentColor;background:none;color:inherit;border-radius:999px;padding:7px 14px;font:inherit;cursor:pointer}
+  /* Selector de tipografía */
+  .fsw{display:flex;gap:4px;background:rgba(0,0,0,.06);border-radius:999px;padding:4px;margin:0 0 14px;width:max-content}
+  :root:not([data-theme="light"]) .fsw{background:rgba(255,255,255,.1)}
+  .side .fsw button{border:0;border-radius:999px;padding:6px 12px;font-size:13px}
+  .fsw button.on{background:#a8583a;color:#fff}
+  .fsw-m{display:none}
+  @media (max-width:500px){
+    .fsw-m{display:flex;position:fixed;bottom:84px;left:50%;transform:translateX(-50%);z-index:50;background:rgba(30,30,30,.85);backdrop-filter:blur(8px);margin:0;box-shadow:0 4px 18px rgba(0,0,0,.35)}
+    .fsw-m button{border:0;background:none;color:#fff;border-radius:999px;padding:7px 13px;font:600 13px/1 inherit;font-family:inherit}
+  }
 </style>
 </head>
 <body>
@@ -197,10 +207,14 @@
   <div class="home-ind"><i></i></div>
 </div>
 
+<div class="fsw fsw-m" data-fsw><button data-fs="1">Cormorant</button><button data-fs="2">Fraunces</button><button data-fs="3">Jost</button></div>
+
 <div class="side">
   <h1>Simulador @grestenta</h1><p><b>Versión solo vajilla.</b> <a href="../" style="color:inherit">Ver la versión con comida</a></p>
   <p>Tocá cualquier foto de la grilla para abrir la publicación, igual que en Instagram. Doble clic en la foto le da “me gusta”.</p>
   <p>Seguidores y “me gusta” son números de ejemplo.</p>
+  <p><b>Tipografía de las placas</b></p>
+  <div class="fsw" data-fsw><button data-fs="1">1 · Cormorant</button><button data-fs="2">2 · Fraunces</button><button data-fs="3">3 · Jost</button></div>
   <button id="theme">Cambiar a modo claro</button>
 </div>
 
@@ -227,6 +241,17 @@
   ];
   const TAGS = "#gres #ceramica #vajilla #hechoamano #grestenta";
   const shown = POSTS.map((p,i)=>({img:p[0],cap:p[1],n:i+1})).reverse(); // más nuevo primero
+  /* Placas con 3 tipografías posibles: se cargan desde fuentes/N/ */
+  const CARDS = ["gres","usos","vajilla"];
+  let FS = 1;
+  try{ FS = +(new URLSearchParams(location.search).get("fuente") || localStorage.getItem("tenta_fuente") || 1) || 1; }catch(e){}
+  const cardKey = img => CARDS.find(k => img.replace(/\.jpg$/,"").endsWith("_"+k));
+  const srcOf = img => { const k=cardKey(img); return k ? `fuentes/${FS}/${k}.jpg` : img; };
+  function setFont(n){
+    FS=n; try{ localStorage.setItem("tenta_fuente",n); }catch(e){}
+    document.querySelectorAll("img[data-src]").forEach(im=>{ im.src=srcOf(im.dataset.src); });
+    document.querySelectorAll("[data-fs]").forEach(b=>b.classList.toggle("on", +b.dataset.fs===n));
+  }
   const $ = s => document.querySelector(s);
   const I = {
     heart:'<svg viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg>',
@@ -241,7 +266,7 @@
   const DAYS = ["hace 1 día","hace 2 días","hace 3 días","hace 4 días","hace 5 días","hace 6 días","hace 1 semana"];
   const fmt = n => n.toLocaleString("es-AR");
 
-  $("#grid").innerHTML = shown.map((p,i)=>`<button data-i="${i}"><img src="${p.img}" alt="" loading="lazy"></button>`).join("");
+  $("#grid").innerHTML = shown.map((p,i)=>`<button data-i="${i}"><img src="${srcOf(p.img)}" data-src="${p.img}" alt="" loading="lazy"></button>`).join("");
 
   $("#posts").innerHTML = shown.map((p,i)=>{
     const capFull = `${p.cap}\n\n${TAGS}`;
@@ -249,7 +274,7 @@
     const needsMore = capFull.length > short.length + 2 && short.length > 0;
     return `<article class="post" id="post${i}">
       <div class="phead"><img src="avatar.jpg" alt=""><b>grestenta</b>${I.dots}</div>
-      <div class="pimg" data-i="${i}"><img src="${p.img}" alt=""><div class="big">${I.heart}</div></div>
+      <div class="pimg" data-i="${i}"><img src="${srcOf(p.img)}" data-src="${p.img}" alt=""><div class="big">${I.heart}</div></div>
       <div class="acts">
         <button class="like" data-i="${i}">${I.heart}<span>${fmt(likesOf(p.n))}</span></button>
         <button>${I.comment}<span>${commentsOf(p.n)}</span></button>
@@ -277,6 +302,9 @@
   $("#grid").addEventListener("click",e=>{ const b=e.target.closest("button"); if(b) openPost(+b.dataset.i); });
   $("#back").onclick=closeFeed;
   $("#navMe").onclick=$("#navHome").onclick=()=>{ if(!feed.classList.contains("hidden")) closeFeed(); profile.scrollTo({top:0,behavior:"smooth"}); };
+
+  document.querySelectorAll("[data-fs]").forEach(b=>b.onclick=()=>setFont(+b.dataset.fs));
+  setFont(FS);
 
   function setLike(i,on){
     const b=document.querySelector(`.like[data-i="${i}"]`), n=likesOf(shown[i].n);
