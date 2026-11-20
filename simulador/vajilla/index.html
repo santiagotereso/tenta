@@ -171,11 +171,11 @@
     </div>
 
     <div class="hl">
-      <div><img src="06_platos_salvia.jpg" alt="">Platos</div>
-      <div><img src="14_laguna.jpg" alt="">Bowls</div>
-      <div><img src="10_vasos_avena.jpg" alt="">Tazas</div>
-      <div><img src="11_barro.jpg" alt="">Ensaladeras</div>
-      <div><img src="08_belen.jpg" alt="">Taller</div>
+      <div><img src="06_platos_salvia.jpg?v=20261120b" alt="">Platos</div>
+      <div><img src="14_laguna.jpg?v=20261120b" alt="">Bowls</div>
+      <div><img src="10_vasos_avena.jpg?v=20261120b" alt="">Tazas</div>
+      <div><img src="11_barro.jpg?v=20261120b" alt="">Ensaladeras</div>
+      <div><img src="08_belen.jpg?v=20261120b" alt="">Taller</div>
       <div class="new"><span><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg></span>Nueva</div>
     </div>
 
@@ -246,7 +246,8 @@
   let FS = 1;
   try{ FS = +(new URLSearchParams(location.search).get("fuente") || localStorage.getItem("tenta_fuente") || 1) || 1; }catch(e){}
   const cardKey = img => CARDS.find(k => img.replace(/\.jpg$/,"").endsWith("_"+k));
-  const srcOf = img => { const k=cardKey(img); return k ? `fuentes/${FS}/${k}.jpg` : img; };
+  const VER = "20261120b";
+  const srcOf = img => { const k=cardKey(img); return (k ? `fuentes/${FS}/${k}.jpg` : img) + "?v=" + VER; };
   function setFont(n){
     FS=n; try{ localStorage.setItem("tenta_fuente",n); }catch(e){}
     document.querySelectorAll("img[data-src]").forEach(im=>{ im.src=srcOf(im.dataset.src); });
