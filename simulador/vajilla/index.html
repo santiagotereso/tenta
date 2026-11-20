@@ -171,11 +171,11 @@
     </div>
 
     <div class="hl">
-      <div><img src="06_platos_salvia.jpg?v=20261120e" alt="">Platos</div>
-      <div><img src="14_laguna.jpg?v=20261120e" alt="">Bowls</div>
-      <div><img src="10_vasos_avena.jpg?v=20261120e" alt="">Tazas</div>
-      <div><img src="11_barro.jpg?v=20261120e" alt="">Ensaladeras</div>
-      <div><img src="08_belen.jpg?v=20261120e" alt="">Taller</div>
+      <div><img src="06_platos_salvia.jpg?v=20261120f" alt="">Platos</div>
+      <div><img src="14_laguna.jpg?v=20261120f" alt="">Bowls</div>
+      <div><img src="10_vasos_avena.jpg?v=20261120f" alt="">Tazas</div>
+      <div><img src="11_barro.jpg?v=20261120f" alt="">Ensaladeras</div>
+      <div><img src="08_belen.jpg?v=20261120f" alt="">Taller</div>
       <div class="new"><span><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg></span>Nueva</div>
     </div>
 
@@ -238,7 +238,7 @@
     ["15_orilla.jpg", "Bowl Orilla, +1000 de aura"],
     ["16_platos_cenital.jpg", "Platos Duna, en dos tamaños."],
     ["17_tierra.jpg", "Tazas Tierra. Barro oscuro por fuera y un toque de color por dentro."],
-    ["18_hueso.jpg", "Bowl Hueso. Esmalte claro y el pie de barro a la vista."],
+    ["18_unica.jpg", "Torneadas una por una. Las pequeñas diferencias son parte de cada pieza."],
   ];
   const TAGS = "#gres #ceramica #vajilla #hechoamano #tentagres";
   const shown = POSTS.map((p,i)=>({img:p[0],cap:p[1],n:i+1})).reverse(); // más nuevo primero
@@ -247,7 +247,7 @@
   let FS = 3;
   try{ FS = +(new URLSearchParams(location.search).get("fuente") || localStorage.getItem("tenta_fuente_v2") || 1) || 1; }catch(e){}
   const cardKey = img => CARDS.find(k => img.replace(/\.jpg$/,"").endsWith("_"+k));
-  const VER = "20261120e";
+  const VER = "20261120f";
   const srcOf = img => { const k=cardKey(img); return (k ? `fuentes/${FS}/${k}.jpg` : img) + "?v=" + VER; };
   function setFont(n){
     FS=n; try{ localStorage.setItem("tenta_fuente_v2",n); }catch(e){}
