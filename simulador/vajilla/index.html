@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Simulador grestenta</title>
+<title>Simulador tentagres_</title>
 <style>
   :root{
     --bg:#000; --fg:#f5f5f5; --muted:#a8a8a8; --line:#262626; --btn:#363636; --link:#e0f1ff;
@@ -143,7 +143,7 @@
   <div class="view" id="profile">
     <div class="topbar">
       <span><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg></span>
-      <span class="user">grestenta <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg><span class="dot"></span></span>
+      <span class="user">tentagres_ <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg><span class="dot"></span></span>
       <span class="icons"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/></svg><svg viewBox="0 0 24 24"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg></span>
     </div>
 
@@ -171,11 +171,11 @@
     </div>
 
     <div class="hl">
-      <div><img src="06_platos_salvia.jpg?v=20261120b" alt="">Platos</div>
-      <div><img src="14_laguna.jpg?v=20261120b" alt="">Bowls</div>
-      <div><img src="10_vasos_avena.jpg?v=20261120b" alt="">Tazas</div>
-      <div><img src="11_barro.jpg?v=20261120b" alt="">Ensaladeras</div>
-      <div><img src="08_belen.jpg?v=20261120b" alt="">Taller</div>
+      <div><img src="06_platos_salvia.jpg?v=20261120c" alt="">Platos</div>
+      <div><img src="14_laguna.jpg?v=20261120c" alt="">Bowls</div>
+      <div><img src="10_vasos_avena.jpg?v=20261120c" alt="">Tazas</div>
+      <div><img src="11_barro.jpg?v=20261120c" alt="">Ensaladeras</div>
+      <div><img src="08_belen.jpg?v=20261120c" alt="">Taller</div>
       <div class="new"><span><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg></span>Nueva</div>
     </div>
 
@@ -192,7 +192,7 @@
   <div class="view hidden" id="feed">
     <div class="ptop">
       <button id="back" aria-label="Volver"><svg viewBox="0 0 24 24" style="width:28px;height:28px"><path d="m15 18-6-6 6-6"/></svg></button>
-      <div class="t"><small>grestenta</small><b>Publicaciones</b></div>
+      <div class="t"><small>tentagres_</small><b>Publicaciones</b></div>
     </div>
     <div id="posts"></div>
   </div>
@@ -210,7 +210,7 @@
 <div class="fsw fsw-m" data-fsw><button data-fs="1">Cormorant</button><button data-fs="2">Fraunces</button><button data-fs="3">Jost</button></div>
 
 <div class="side">
-  <h1>Simulador @grestenta</h1><p><b>Versión solo vajilla.</b> <a href="../" style="color:inherit">Ver la versión con comida</a></p>
+  <h1>Simulador @tentagres_</h1><p><b>Versión solo vajilla.</b> <a href="../" style="color:inherit">Ver la versión con comida</a></p>
   <p>Tocá cualquier foto de la grilla para abrir la publicación, igual que en Instagram. Doble clic en la foto le da “me gusta”.</p>
   <p>Seguidores y “me gusta” son números de ejemplo.</p>
   <p><b>Tipografía de las placas</b></p>
@@ -221,35 +221,35 @@
 <script>
   /* Orden de subida: 01 primero ... 15 último. En el perfil se ve al revés (15 arriba a la izquierda). */
   const POSTS = [
-    ["01_logo.jpg","Tentá Gres. Vajilla de gres hecha a mano en Buenos Aires.\nPedidos por WhatsApp, el link está en la bio."],
-    ["02_ensaladera_arena.jpg","Ensaladera Arena. Un tono neutro que deja lucir cualquier comida."],
-    ["03_gres.jpg","El gres es un material cerámico de alta temperatura, resistente y de baja porosidad. Ideal para el uso de todos los días."],
-    ["04_tostado.jpg","Bowl Tostado. Tonos cálidos y bordes con carácter."],
-    ["05_ensaladera_oliva.jpg","Ensaladera Oliva. Cada esmalte se mueve distinto en el horno, por eso no hay dos piezas iguales."],
-    ["06_platos_salvia.jpg","Plato Salvia. Un verde suave que acompaña cualquier comida."],
-    ["07_textura.jpg","Puntitos, texturas y matices: así se ve el gres de cerca."],
-    ["08_belen.jpg","Hecho a mano, pieza por pieza, en nuestro taller."],
-    ["09_usos.jpg","Vajilla para restaurantes, cafés y para tu casa. Trabajamos por encargo: escribinos y armamos la propuesta según la identidad de tu local."],
-    ["10_vasos_avena.jpg","Tazas Avena, para el café de todos los días."],
-    ["11_barro.jpg","Ensaladera Barro. Formas amplias para compartir."],
-    ["12_avena_detalle.jpg","El barro y el esmalte, capa por capa."],
-    ["13_vajilla.jpg","Vajilla de gres hecha a mano, para el hogar y la gastronomía."],
-    ["14_laguna.jpg","Bowls Laguna. Un azul que cambia con la luz."],
-    ["15_orilla.jpg","Bowl Orilla. Cada borde es único."],
-    ["16_platos_cenital.jpg","Formas simples para que la comida sea protagonista."],
-    ["17_tierra.jpg","Tazas Tierra. Barro oscuro por fuera y un toque de color por dentro."],
+    ["01_logo.jpg", "Tentá Gres. Vajilla de gres hecha a mano en Buenos Aires.\nPedidos por WhatsApp, el link está en la bio."],
+    ["02_ensaladera_arena.jpg", "Ensaladera grande, mediana o individual"],
+    ["03_gres.jpg", "El gres es un material cerámico de alta temperatura, resistente y de baja porosidad. Ideal para el uso de todos los días."],
+    ["04_tostado.jpg", "Bowl Tostado. Tonos cálidos y bordes con carácter."],
+    ["05_ensaladera_oliva.jpg", "Ensaladera Oliva."],
+    ["06_platos_salvia.jpg", "Plato Salvia."],
+    ["07_textura.jpg", "Nuestros esmaltes"],
+    ["08_belen.jpg", "Hecho a mano, pieza por pieza, en nuestro taller."],
+    ["09_usos.jpg", "Vajilla para restaurantes, cafés y para tu casa. Trabajamos por encargo: escribinos y armamos la propuesta según la identidad de tu local."],
+    ["10_vasos_avena.jpg", "Tazas Avena."],
+    ["11_barro.jpg", "Ensaladera Barro. Formas amplias para compartir."],
+    ["12_avena_detalle.jpg", "El barro y el esmalte, capa por capa."],
+    ["13_vajilla.jpg", "Vajilla para el hogar y la gastronomía."],
+    ["14_laguna.jpg", "Ensaladera Laguna. Cada esmalte se mueve distinto en el horno, por eso no hay dos piezas iguales."],
+    ["15_orilla.jpg", "Bowl Orilla, +1000 de aura"],
+    ["16_platos_cenital.jpg", "Platos Duna, en dos tamaños."],
+    ["17_tierra.jpg", "Tazas Tierra. Barro oscuro por fuera y un toque de color por dentro."],
   ];
-  const TAGS = "#gres #ceramica #vajilla #hechoamano #grestenta";
+  const TAGS = "#gres #ceramica #vajilla #hechoamano #tentagres";
   const shown = POSTS.map((p,i)=>({img:p[0],cap:p[1],n:i+1})).reverse(); // más nuevo primero
   /* Placas con 3 tipografías posibles: se cargan desde fuentes/N/ */
   const CARDS = ["gres","usos","vajilla"];
-  let FS = 1;
-  try{ FS = +(new URLSearchParams(location.search).get("fuente") || localStorage.getItem("tenta_fuente") || 1) || 1; }catch(e){}
+  let FS = 3;
+  try{ FS = +(new URLSearchParams(location.search).get("fuente") || localStorage.getItem("tenta_fuente_v2") || 1) || 1; }catch(e){}
   const cardKey = img => CARDS.find(k => img.replace(/\.jpg$/,"").endsWith("_"+k));
-  const VER = "20261120b";
+  const VER = "20261120c";
   const srcOf = img => { const k=cardKey(img); return (k ? `fuentes/${FS}/${k}.jpg` : img) + "?v=" + VER; };
   function setFont(n){
-    FS=n; try{ localStorage.setItem("tenta_fuente",n); }catch(e){}
+    FS=n; try{ localStorage.setItem("tenta_fuente_v2",n); }catch(e){}
     document.querySelectorAll("img[data-src]").forEach(im=>{ im.src=srcOf(im.dataset.src); });
     document.querySelectorAll("[data-fs]").forEach(b=>b.classList.toggle("on", +b.dataset.fs===n));
   }
@@ -274,7 +274,7 @@
     const short = p.cap.split("\n")[0];
     const needsMore = capFull.length > short.length + 2 && short.length > 0;
     return `<article class="post" id="post${i}">
-      <div class="phead"><img src="avatar.jpg" alt=""><b>grestenta</b>${I.dots}</div>
+      <div class="phead"><img src="avatar.jpg" alt=""><b>tentagres_</b>${I.dots}</div>
       <div class="pimg" data-i="${i}"><img src="${srcOf(p.img)}" data-src="${p.img}" alt=""><div class="big">${I.heart}</div></div>
       <div class="acts">
         <button class="like" data-i="${i}">${I.heart}<span>${fmt(likesOf(p.n))}</span></button>
@@ -282,7 +282,7 @@
         <button>${I.send}</button><span class="sp"></span>
         <button class="save">${I.save}</button>
       </div>
-      <div class="cap" data-full="${encodeURIComponent(capFull)}"><b>grestenta</b>${short}${needsMore?' <span class="more">... más</span>':''}</div>
+      <div class="cap" data-full="${encodeURIComponent(capFull)}"><b>tentagres_</b>${short}${needsMore?' <span class="more">... más</span>':''}</div>
       <div class="meta">Ver los ${commentsOf(p.n)} comentarios</div>
       <div class="date">${DAYS[Math.min(i,DAYS.length-1)]}</div>
     </article>`;
@@ -315,7 +315,7 @@
     const like=e.target.closest(".like"); if(like){ setLike(+like.dataset.i,!like.classList.contains("on")); return; }
     const save=e.target.closest(".save"); if(save){ save.classList.toggle("on"); return; }
     const more=e.target.closest(".more"); if(more){ const c=more.parentElement;
-      c.innerHTML=`<b>grestenta</b>${decodeURIComponent(c.dataset.full)}`; return; }
+      c.innerHTML=`<b>tentagres_</b>${decodeURIComponent(c.dataset.full)}`; return; }
   });
   feed.addEventListener("dblclick",e=>{
     const pi=e.target.closest(".pimg"); if(!pi) return;
