@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Simulador grestenta</title>
+<title>Simulador tentagres_</title>
 <style>
   :root{
     --bg:#000; --fg:#f5f5f5; --muted:#a8a8a8; --line:#262626; --btn:#363636; --link:#e0f1ff;
@@ -133,7 +133,7 @@
   <div class="view" id="profile">
     <div class="topbar">
       <span><svg viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M12 5v14"/></svg></span>
-      <span class="user">grestenta <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg><span class="dot"></span></span>
+      <span class="user">tentagres_ <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg><span class="dot"></span></span>
       <span class="icons"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"/></svg><svg viewBox="0 0 24 24"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg></span>
     </div>
 
@@ -182,7 +182,7 @@
   <div class="view hidden" id="feed">
     <div class="ptop">
       <button id="back" aria-label="Volver"><svg viewBox="0 0 24 24" style="width:28px;height:28px"><path d="m15 18-6-6 6-6"/></svg></button>
-      <div class="t"><small>grestenta</small><b>Publicaciones</b></div>
+      <div class="t"><small>tentagres_</small><b>Publicaciones</b></div>
     </div>
     <div id="posts"></div>
   </div>
@@ -198,7 +198,7 @@
 </div>
 
 <div class="side">
-  <h1>Simulador @grestenta</h1><p><b>Versión con comida.</b> <a href="vajilla/" style="color:inherit">Ver la versión solo vajilla</a></p>
+  <h1>Simulador @tentagres_</h1><p><b>Versión con comida.</b> <a href="vajilla/" style="color:inherit">Ver la versión solo vajilla</a></p>
   <p>Tocá cualquier foto de la grilla para abrir la publicación, igual que en Instagram. Doble clic en la foto le da “me gusta”.</p>
   <p>Seguidores y “me gusta” son números de ejemplo.</p>
   <button id="theme">Cambiar a modo claro</button>
@@ -223,7 +223,7 @@
     ["14_comida_papas.jpg","Pensada para la gastronomía."],
     ["15_platos_cenital.jpg","Formas simples para que la comida sea protagonista."],
   ];
-  const TAGS = "#gres #ceramica #vajilla #hechoamano #grestenta";
+  const TAGS = "#gres #ceramica #vajilla #hechoamano #tentagres_";
   const shown = POSTS.map((p,i)=>({img:p[0],cap:p[1],n:i+1})).reverse(); // más nuevo primero
   const $ = s => document.querySelector(s);
   const I = {
@@ -246,7 +246,7 @@
     const short = p.cap.split("\n")[0];
     const needsMore = capFull.length > short.length + 2 && short.length > 0;
     return `<article class="post" id="post${i}">
-      <div class="phead"><img src="avatar.jpg" alt=""><b>grestenta</b>${I.dots}</div>
+      <div class="phead"><img src="avatar.jpg" alt=""><b>tentagres_</b>${I.dots}</div>
       <div class="pimg" data-i="${i}"><img src="${p.img}" alt=""><div class="big">${I.heart}</div></div>
       <div class="acts">
         <button class="like" data-i="${i}">${I.heart}<span>${fmt(likesOf(p.n))}</span></button>
@@ -254,7 +254,7 @@
         <button>${I.send}</button><span class="sp"></span>
         <button class="save">${I.save}</button>
       </div>
-      <div class="cap" data-full="${encodeURIComponent(capFull)}"><b>grestenta</b>${short}${needsMore?' <span class="more">... más</span>':''}</div>
+      <div class="cap" data-full="${encodeURIComponent(capFull)}"><b>tentagres_</b>${short}${needsMore?' <span class="more">... más</span>':''}</div>
       <div class="meta">Ver los ${commentsOf(p.n)} comentarios</div>
       <div class="date">${DAYS[Math.min(i,DAYS.length-1)]}</div>
     </article>`;
@@ -284,7 +284,7 @@
     const like=e.target.closest(".like"); if(like){ setLike(+like.dataset.i,!like.classList.contains("on")); return; }
     const save=e.target.closest(".save"); if(save){ save.classList.toggle("on"); return; }
     const more=e.target.closest(".more"); if(more){ const c=more.parentElement;
-      c.innerHTML=`<b>grestenta</b>${decodeURIComponent(c.dataset.full)}`; return; }
+      c.innerHTML=`<b>tentagres_</b>${decodeURIComponent(c.dataset.full)}`; return; }
   });
   feed.addEventListener("dblclick",e=>{
     const pi=e.target.closest(".pimg"); if(!pi) return;
